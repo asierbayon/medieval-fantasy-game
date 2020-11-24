@@ -5,6 +5,7 @@ class Character {
         this.x = x;
         this.vx = 0;
         this.maxX = this.ctx.canvas.width / 2;
+        this.minX = 0;
 
         this.y = y;
         this.vy = 0;
@@ -84,7 +85,6 @@ class Character {
         this.x += this.vx;
         this.y += this.vy;
     
-        // Check canvas bounds
         if (this.x >= this.maxX) {
           this.x = this.maxX;
         } else if (this.x <= this.minX) {
