@@ -3,17 +3,30 @@ class Background {
         this.ctx = ctx;
 
         this.x = 0;
+        this.footerX = 0;
         this.y = 0;
         this.h = this.ctx.canvas.height;
         this.w = this.ctx.canvas.width;
+        this.footerH = this.h * 0.1;
+        this.footerY = this.h - this.footerH;
 
         this.vx = -2;
 
-        this.img = new Image();
-        this.img.src = 'assets/img/background_glacial_mountains.png'
-        this.img.isReady = false;
-        this.img.onload = () => {
-            this.img.isReady = true;
+        this.bgImg = new Image();
+        this.bgImg.src = 'assets/img/background_glacial_mountains.png';
+
+        this.footerImg = new Image();
+        this.footerImg.src = 'assets/img/ground.PNG';
+
+        this.bgImg.isReady = false;
+        this.footerImg.isReady = false;
+
+        this.bgImg.onload = () => {
+            this.bgImg.isReady = true;
+        }
+
+        this.footerImg.onload = () => {
+            this.footerImg.isReady = true;
         }
 
         this.movements = {
@@ -24,7 +37,7 @@ class Background {
     }
 
     isReady() {
-        return this.img.isReady;
+        return this.bgImg.isReady;
     }
 
     onKeyEvent(event) {
@@ -36,20 +49,34 @@ class Background {
         }  
     }
     draw() {
-        if (this.img.isReady) {
+        if (this.bgImg.isReady && this.footerImg.isReady) {
 			this.ctx.drawImage(
-				this.img,
+				this.bgImg,
 				this.x,
 				this.y,
 				this.w,
 				this.h
             );
             this.ctx.drawImage(
-				this.img,
+				this.bgImg,
 				this.x + this.w,
 				this.y,
 				this.w,
 				this.h
+            );
+            this.ctx.drawImage(
+				this.footerImg,
+				this.footerX,
+				this.footerY,
+				this.w,
+				this.footerH
+            );
+            this.ctx.drawImage(
+				this.footerImg,
+				this.footerX + this.w,
+				this.footerY,
+				this.w,
+				this.footerH
             );
 	    }
     }
@@ -57,8 +84,10 @@ class Background {
     move() {
         if (this.movements.right) {
             this.x += this.vx;
+            this.footerX += this.vx;
             if (this.x + this.w <= 0) {
               this.x = 0;
+              this.footerX = 0;
             }
           }
       }

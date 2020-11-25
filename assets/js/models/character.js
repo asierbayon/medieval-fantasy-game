@@ -12,12 +12,13 @@ class Character {
         this.maxY = this.y;
 
         this.sprite = new Image();
-        this.sprite.src = 'assets/img/Knight/noBKG_KnightRun_strip.png';
+        this.sprite.src = 'assets/img/knight_all.PNG';
         this.sprite.isReady = false;
-        this.sprite.horizontalFrames = 8;
-        this.sprite.verticalFrames = 1;
-        this.sprite.verticalFrameIndex = 0;
+        this.sprite.horizontalFrames = 22;
+        this.sprite.verticalFrames = 5;
+        this.sprite.verticalFrameIndex = 3;
         this.sprite.horizontalFrameIndex = 0;
+        this.maxHorizontalIndex = this.horizontalFrames;
         this.sprite.drawCount = 0;
         this.sprite.onload = () => {
             this.sprite.isReady = true;
@@ -32,6 +33,8 @@ class Character {
             right: false,
             left: false
         }
+
+        this.isJumping = false;
 
     }
 
@@ -74,6 +77,13 @@ class Character {
 
     move() { 
 
+        if (this.movement.up && !this.isJumping) {
+            this.isJumping = true;
+            this.vy = -8;
+        }   else if (this.isJumping) {
+            this.vy += GRAVITY;
+        }
+
         if (this.movement.right) {
           this.vx = SPEED;
         } else if (this.movement.left) {
@@ -98,8 +108,10 @@ class Character {
       }
 
       animate() {
-          if (this.movement.right || this.movement.left) {
-              this.animateSprite(0, 0, 2, 5);
+        if (this.isJumping) {
+            this.animateSprite(1, 0, 6, 20);
+          } else if (this.movement.right || this.movement.left) {
+              this.animateSprite(4, 0, 7, 10);
           } else {
               this.resetAnimation();
           }
@@ -110,14 +122,20 @@ class Character {
             this.sprite.verticalFrameIndex = initialVerticalIndex;
             this.sprite.horizontalFrameIndex = initialHorizontalIndex;
           } else if (this.sprite.drawCount % frequency === 0) {
-            this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1) % this.sprite.horizontalFrames;
-            this.sprite.drawCount = 0;
+              if (this.sprite.horizontalFrameIndex < maxHorizontalIndex) {
+                this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1);
+                this.sprite.drawCount = 0;
+              } else {
+                this.sprite.horizontalFrameIndex = 0;
+                this.sprite.drawCount = 0;
+              }
+           /*  this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1) % this.sprite.horizontalFrames;
+            this.sprite.drawCount = 0; */
           }
     }
 
     resetAnimation() {
-        this.sprite.verticalFrameIndex = 0;
-        this.sprite.horizontalFrameIndex = 0;
+        this.animateSprite(3, 0, 14, 4)
     }
       
 }

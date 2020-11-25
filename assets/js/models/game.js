@@ -9,7 +9,7 @@ class Game {
         this.fps = 1000 / 60
 
         this.background = new Background(this.ctx);
-        this.character = new Character(this.ctx, 15, 383);
+        this.character = new Character(this.ctx, 15, 410);
     }
 
     start() {
