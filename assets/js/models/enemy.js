@@ -1,6 +1,6 @@
 class Enemy {
 
-    constructor(ctx, x, y) {
+    constructor(ctx, x, y, character) {
         this.ctx = ctx;
         this.x = x;
         this.vx = 0;
@@ -15,7 +15,7 @@ class Enemy {
         this.sprite.src = 'assets/img/king_sprites.png';
         this.sprite.isReady = false;
         this.sprite.horizontalFrames = 18;
-        this.sprite.verticalFrames = 2;
+        this.sprite.verticalFrames = 4;
         this.sprite.verticalFrameIndex = 0;
         this.sprite.horizontalFrameIndex = 0;
         this.maxHorizontalIndex = this.horizontalFrames;
@@ -27,6 +27,9 @@ class Enemy {
             this.width = this.sprite.frameWidth;
             this.height = this.sprite.frameHeight;
         }
+
+        this.character = character;
+        this.isCloseToCharacter = false;
 
 
     }
@@ -54,26 +57,39 @@ class Enemy {
         
     }  
 
-    move(character) { 
-        if (character.x === character.maxX && character.movement.right) {
+    closeness() {
+        if (this.x > this.character.x && this.x < this.character.x + this.character.width / 2) {
+            this.isCloseToCharacter = true;
+        } else if (this.character.x < this.x + this.width / 2 && this.x < this.character.x) {
+            this.isCloseToCharacter = true;
+        } else {
+            this.isCloseToCharacter = false;
+        }
+    }
+
+    move() {
+        this.closeness();
+        if (this.character.x === this.character.maxX && this.character.movement.right) {
             this.vx = -1;
-        }  else if (this.x > character.x && this.x < character.x + character.width / 2) {
+        }  else if (this.isCloseToCharacter) {
             this.vx = 0;
-        }  else if (character.x < this.x + this.width / 2 && this.x < character.x) {
-            this.vx = 0;
-        }  else if (this.x > character.x) {
+        }    else if (this.x > this.character.x) {
             this.vx = -1;
-        }  else if (this.x < character.x) {
+        }  else if (this.x < this.character.x) {
             this.vx = 1;
         }
 
         this.x += this.vx;
       }
 
-      animate(character) {
-        if (this.x < character.x) {
+      animate() {
+        if (this.x < this.character.x && !this.isCloseToCharacter) {
+            this.animateSprite(2, 0, 7, 10);
+        } else if (this.x > this.character.x && !this.isCloseToCharacter) {
+            this.animateSprite(3, 0, 7, 10);
+        } else if (this.x < this.character.x && this.isCloseToCharacter) {
             this.animateSprite(0, 0, 17, 5);
-        } else {
+        } else if (this.x > this.character.x && this.isCloseToCharacter) {
             this.animateSprite(1, 0, 17, 5);
         }
       }
@@ -94,6 +110,6 @@ class Enemy {
     }
 
     resetAnimation() {
-    
+        
     }
 }

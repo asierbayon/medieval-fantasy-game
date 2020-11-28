@@ -10,7 +10,7 @@ class Game {
 
         this.background = new Background(this.ctx);
         this.character = new Character(this.ctx, 15, 410);
-        this.enemy = new Enemy(this.ctx, 200, 395)
+        this.enemy = new Enemy(this.ctx, 200, 395, this.character)
     }
 
     start() {
