@@ -48,5 +48,6 @@ class Game {
             this.background.move();
           }
         this.character.move();
+        this.enemy.move(this.character)
     }
 }

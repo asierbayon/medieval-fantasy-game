@@ -54,8 +54,20 @@ class Enemy {
         
     }  
 
-    move() { 
+    move(character) { 
+        if (character.x === character.maxX && character.movement.right) {
+            this.vx = -1;
+        }  else if (this.x > character.x && this.x < character.x + character.width / 2) {
+            this.vx = 0;
+        }  else if (character.x < this.x + this.width / 2 && this.x < character.x) {
+            this.vx = 0;
+        }  else if (this.x > character.x) {
+            this.vx = -1;
+        }  else if (this.x < character.x) {
+            this.vx = 1;
+        }
 
+        this.x += this.vx;
       }
 
       animate(character) {
