@@ -12,11 +12,11 @@ class Character {
         this.maxY = this.y;
 
         this.sprite = new Image();
-        this.sprite.src = 'assets/img/knight_all.PNG';
+        this.sprite.src = 'assets/img/knight_sprites.png';
         this.sprite.isReady = false;
         this.sprite.horizontalFrames = 22;
-        this.sprite.verticalFrames = 5;
-        this.sprite.verticalFrameIndex = 3;
+        this.sprite.verticalFrames = 10;
+        this.sprite.verticalFrameIndex = 0;
         this.sprite.horizontalFrameIndex = 0;
         this.maxHorizontalIndex = this.horizontalFrames;
         this.sprite.drawCount = 0;
@@ -35,6 +35,7 @@ class Character {
         }
 
         this.isJumping = false;
+        this.lastMovement = 'right';
 
     }
 
@@ -61,7 +62,7 @@ class Character {
         if (this.sprite.isReady) {
           this.ctx.drawImage(
             this.sprite,
-            this.sprite.horizontalFrameIndex * this.sprite.frameWidth,
+            this.sprite.horizontalFrameIndex * Math.floor(this.sprite.frameWidth),
             this.sprite.verticalFrameIndex * this.sprite.frameHeight,
             this.sprite.frameWidth,
             this.sprite.frameHeight,
@@ -73,6 +74,7 @@ class Character {
         }
         this.sprite.drawCount++;
         this.animate();
+        
     }  
 
     move() { 
@@ -108,12 +110,20 @@ class Character {
       }
 
       animate() {
-        if (this.isJumping) {
-            this.animateSprite(1, 0, 6, 20);
-          } else if (this.movement.right || this.movement.left) {
-              this.animateSprite(4, 0, 7, 10);
+        if (this.isJumping && this.lastMovement === 'right') {
+                this.animateSprite(4, 4, 11, 18);
+          } else if (this.isJumping && this.lastMovement === 'left') {
+                this.animateSprite(5, 4, 11, 18);
+          } else if (this.movement.right) {
+                this.animateSprite(2, 0, 7, 10);
+                this.lastMovement = 'right';
+          } else if (this.movement.left) {
+                this.animateSprite(3, 0, 7, 10);
+                this.lastMovement = 'left';
+          } else if (this.lastMovement === 'left') {
+                this.animateSprite(1, 0, 14, 5);
           } else {
-              this.resetAnimation();
+                this.animateSprite(0, 0, 14, 5);
           }
       }
 
@@ -129,13 +139,10 @@ class Character {
                 this.sprite.horizontalFrameIndex = 0;
                 this.sprite.drawCount = 0;
               }
-           /*  this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1) % this.sprite.horizontalFrames;
-            this.sprite.drawCount = 0; */
           }
     }
 
     resetAnimation() {
-        this.animateSprite(3, 0, 14, 4)
+       
     }
-      
 }

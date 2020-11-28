@@ -10,6 +10,7 @@ class Game {
 
         this.background = new Background(this.ctx);
         this.character = new Character(this.ctx, 15, 410);
+        this.enemy = new Enemy(this.ctx, 200, 395)
     }
 
     start() {
@@ -39,6 +40,7 @@ class Game {
     draw() {
         this.background.draw();
         this.character.draw();
+        this.enemy.draw(this.character);
     }
 
     move() {
