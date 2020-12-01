@@ -10,6 +10,7 @@ class Character {
         this.y = y;
         this.vy = 0;
         this.maxY = this.y;
+        this.ground = this.y;
 
         this.sprite = new Image();
         this.sprite.src = 'assets/img/knight_sprites.png';
@@ -38,6 +39,15 @@ class Character {
         this.isJumping = false;
         this.lastMovement = 'right';
         this.isAttacking = false;
+
+        this.isOnAPlatform = false;
+        this.isOffAPlatform = false;
+        this.platformFloor = 0;
+        this.platform = {
+          x: undefined,
+          y: undefined,
+          width: undefined
+        };
 
         this.healthPoints = CHARACTER_HEALTH;
 
@@ -81,14 +91,24 @@ class Character {
         }
         this.sprite.drawCount++;
         this.animate();
+
+        this.ctx.strokeRect(this.x, this.y, this.sprite.frameWidth, this.sprite.frameHeight)
         
     }  
 
     move() { 
+      if (this.isOnAPlatform) {
+        this.maxY = this.platformFloor - this.height;
+      } else if (this.isOffAPlatform) {
+        this.maxY = this.ground;
+        this.vy += GRAVITY;
+      }
 
       if (this.movement.attack) {
         this.isAttacking = true;
       }
+
+      
         if (this.movement.up && !this.isJumping) {
             this.isJumping = true;
             this.vy = -8;
@@ -115,6 +135,7 @@ class Character {
         if (this.y >= this.maxY) {
           this.y = this.maxY;
           this.isJumping = false;
+          this.isOffAPlatform = false;
           this.vy = 0;
         }
       }
@@ -157,6 +178,20 @@ class Character {
     attack() {
       return this.isAttacking;
     }
+
+    onPlatformChecker(element) {
+      if (this.x < element.x + element.width &&
+        this.x + this.width > element.x &&
+        this.y + this.height < element.y) {
+          this.platform = element
+          this.isOnAPlatform = true;
+          this.platformFloor = element.y;
+        } else if ((this.x > this.platform.x + this.platform.width && this.y === this.platformFloor - this.height) ||
+                    (this.x + this.width < this.platform.x && this.y === this.platformFloor -  this.height)) {
+          this.isOnAPlatform = false;
+          this.isOffAPlatform = true;
+        }
+  }
 
     
 }

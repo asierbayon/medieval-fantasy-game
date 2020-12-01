@@ -36,6 +36,7 @@ class Game {
                 this.move();
                 this.draw();
                 this.eliminateEnemies();
+                this.collisionChecker();
             }, this.fps);
         }
     };
@@ -90,5 +91,9 @@ class Game {
         if (this.character.isAttacking) {
             this.enemy.healthPoints = 0;
         }
+    }
+
+    collisionChecker() {
+        this.platform.forEach(platform => this.character.onPlatformChecker(platform));
     }
 }

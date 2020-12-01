@@ -54,6 +54,9 @@ class Platform {
             this.width,
             this.height
             );
+
+            this.ctx.strokeRect(this.x, this.y, this.sprite.frameWidth, this.sprite.frameHeight)
+
         }
     }  
 
