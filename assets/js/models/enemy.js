@@ -14,8 +14,8 @@ class Enemy {
         this.sprite = new Image();
         this.sprite.src = 'assets/img/king_sprites.png';
         this.sprite.isReady = false;
-        this.sprite.horizontalFrames = 18;
-        this.sprite.verticalFrames = 4;
+        this.sprite.horizontalFrames = 37;
+        this.sprite.verticalFrames = 6;
         this.sprite.verticalFrameIndex = 0;
         this.sprite.horizontalFrameIndex = 0;
         this.maxHorizontalIndex = this.horizontalFrames;
@@ -31,6 +31,7 @@ class Enemy {
         this.character = character;
         this.isCloseToCharacter = false;
 
+        this.healthPoints = 2;
 
     }
 
@@ -38,7 +39,7 @@ class Enemy {
         return this.sprite.isReady;
     }
 
-    draw(character) {
+    draw() {
         if (this.sprite.isReady) {
           this.ctx.drawImage(
             this.sprite,
@@ -53,7 +54,7 @@ class Enemy {
           );
         }
         this.sprite.drawCount++;
-        this.animate(character);
+        this.animate();
         
     }  
 
@@ -69,7 +70,12 @@ class Enemy {
 
     move() {
         this.closeness();
-        if (this.character.x === this.character.maxX && this.character.movement.right) {
+        if (this.character.isAttacking) {
+            this.vx = 0;
+            if (this.character.x === this.character.maxX && this.character.movement.right) {
+            this.vx = -2;
+            }
+        }  else if (this.character.x === this.character.maxX && this.character.movement.right) {
             this.vx = -1;
         }  else if (this.isCloseToCharacter) {
             this.vx = 0;
@@ -83,8 +89,10 @@ class Enemy {
       }
 
       animate() {
-        if (this.x < this.character.x && !this.isCloseToCharacter) {
-            this.animateSprite(2, 0, 7, 10);
+        if (this.healthPoints <= 0) {
+            this.animateSprite(5, 0, 36, 10);
+        } else if (this.x < this.character.x && !this.isCloseToCharacter) {
+        this.animateSprite(2, 0, 7, 10);
         } else if (this.x > this.character.x && !this.isCloseToCharacter) {
             this.animateSprite(3, 0, 7, 10);
         } else if (this.x < this.character.x && this.isCloseToCharacter) {
@@ -109,7 +117,4 @@ class Enemy {
           }
     }
 
-    resetAnimation() {
-        
-    }
 }

@@ -10,7 +10,23 @@ class Game {
 
         this.background = new Background(this.ctx);
         this.character = new Character(this.ctx, 15, 410);
-        this.enemy = new Enemy(this.ctx, 200, 395, this.character)
+        this.enemy = new Enemy(this.ctx, 200, 395, this.character);
+        this.platform = [
+            new Platform(this.ctx, 200, 400, 0),
+            new Platform(this.ctx, 300, 350, 1),
+            new Platform(this.ctx, 500, 300, 2),
+            new Platform(this.ctx, 1000, 400, 0),
+        ];
+
+        this.health = [
+            new Health(this.ctx, 20, 20),
+            new Health(this.ctx, 45, 20),
+            new Health(this.ctx, 70, 20)
+        ]
+
+        this.health[0].sprite.horizontalFrameIndex = 0;
+        this.health[1].sprite.horizontalFrameIndex = 0;
+        this.health[2].sprite.horizontalFrameIndex = 0;
     }
 
     start() {
@@ -19,6 +35,7 @@ class Game {
                 this.clear();
                 this.move();
                 this.draw();
+                this.eliminateEnemies();
             }, this.fps);
         }
     };
@@ -26,6 +43,7 @@ class Game {
     onKeyEvent(event) {
         this.background.onKeyEvent(event);
         this.character.onKeyEvent(event);
+        this.platform.forEach(platform => platform.onKeyEvent(event));
     }
 
     stop() {
@@ -39,15 +57,38 @@ class Game {
 
     draw() {
         this.background.draw();
+        this.platform.forEach(platform => platform.draw());
         this.character.draw();
-        this.enemy.draw(this.character);
+        this.enemy.draw();
+        this.health.forEach(heart => heart.draw());
     }
 
     move() {
         if (this.character.x >= this.character.maxX) {
             this.background.move();
+            this.platform.forEach(platform => platform.move());
           }
         this.character.move();
-        this.enemy.move(this.character)
+        this.enemy.move();
+    }
+
+    checkHealth() {
+        const lostHealth = CHARACTER_HEALTH - this.character.healthPoints;
+        if (lostHealth <= 4) {
+            this.health[2].sprite.horizontalFrameIndex = lostHealth;
+        } else if (lostHealth > 4 && lostHealth <= 8) {
+            this.health[1].sprite.horizontalFrameIndex = lostHealth - 4;
+            this.health[2].sprite.horizontalFrameIndex = 4;        
+        } else {
+            this.health[0].sprite.horizontalFrameIndex = lostHealth - 8;  
+            this.health[1].sprite.horizontalFrameIndex = 4;
+            this.health[2].sprite.horizontalFrameIndex = 4;  
+        }
+    }
+
+    eliminateEnemies() {
+        if (this.character.isAttacking) {
+            this.enemy.healthPoints = 0;
+        }
     }
 }

@@ -31,11 +31,15 @@ class Character {
         this.movement = {
             up: false,
             right: false,
-            left: false
+            left: false,
+            attack: false
         }
 
         this.isJumping = false;
         this.lastMovement = 'right';
+        this.isAttacking = false;
+
+        this.healthPoints = CHARACTER_HEALTH;
 
     }
 
@@ -54,6 +58,9 @@ class Character {
                 break;
             case KEY_UP:
                 this.movement.up = state;
+                break;
+            case SPACE:
+                this.movement.attack = state;
                 break;
         }
     }
@@ -79,6 +86,9 @@ class Character {
 
     move() { 
 
+      if (this.movement.attack) {
+        this.isAttacking = true;
+      }
         if (this.movement.up && !this.isJumping) {
             this.isJumping = true;
             this.vy = -8;
@@ -110,7 +120,9 @@ class Character {
       }
 
       animate() {
-        if (this.isJumping && this.lastMovement === 'right') {
+        if(this.isAttacking) {
+          this.animateSprite(6, 0, 21, 10);
+        }   else if (this.isJumping && this.lastMovement === 'right') {
                 this.animateSprite(4, 4, 11, 18);
           } else if (this.isJumping && this.lastMovement === 'left') {
                 this.animateSprite(5, 4, 11, 18);
@@ -142,7 +154,9 @@ class Character {
           }
     }
 
-    resetAnimation() {
-       
+    attack() {
+      return this.isAttacking;
     }
+
+    
 }

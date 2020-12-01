@@ -48,6 +48,7 @@ class Background {
             break;
         }  
     }
+    
     draw() {
         if (this.bgImg.isReady && this.footerImg.isReady) {
 			this.ctx.drawImage(
