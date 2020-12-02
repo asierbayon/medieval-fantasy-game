@@ -10,7 +10,10 @@ class Game {
 
         this.background = new Background(this.ctx);
         this.character = new Character(this.ctx, 15, 410);
-        this.enemy = new Enemy(this.ctx, 200, 395, this.character);
+        this.enemy = [
+            new Enemy(this.ctx, 400, 395, this.character),
+            new Enemy(this.ctx, 1000, 395, this.character)
+        ];
         this.platform = [
             new Platform(this.ctx, 200, 400, 0, 1/3),
             new Platform(this.ctx, 300, 350, 1, 2/3),
@@ -59,7 +62,7 @@ class Game {
         this.background.draw();
         this.platform.forEach(platform => platform.draw());
         this.character.draw();
-        this.enemy.draw();
+        this.enemy.forEach(enemy => enemy.draw());
         this.health.forEach(heart => heart.draw());
     }
 
@@ -69,7 +72,7 @@ class Game {
             this.platform.forEach(platform => platform.move());
           }
         this.character.move();
-        this.enemy.move();
+        this.enemy.forEach(enemy => enemy.move());
     }
 
     checkHealth() {
@@ -94,5 +97,23 @@ class Game {
 
     collisionChecker() {
         this.platform.forEach(platform => this.character.onPlatformChecker(platform));
+        this.enemy.forEach(enemy => this.callEnemy(enemy));
+        this.enemy.forEach(enemy => this.nextToCharacter(enemy));
+    }
+
+    callEnemy(enemy) {
+        if (this.character.x > enemy.x - ACTION_RADIUS && this.character.x < enemy.x + ACTION_RADIUS && enemy.y === this.character.y - 15) {
+            enemy.enemyCalled = true;
+        }
+    }
+
+    nextToCharacter(enemy) {
+        if (enemy.x > this.character.x && enemy.x < this.character.x + this.character.width / 2) {
+            enemy.isNextToCharacter = true;
+        } else if (this.character.x < enemy.x + enemy.width / 2 && enemy.x < this.character.x) {
+            enemy.isNextToCharacter = true;
+        } else {
+            enemy.isNextToCharacter = false;
+        }
     }
 }

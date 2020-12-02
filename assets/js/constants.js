@@ -9,3 +9,5 @@ const GRAVITY = 0.4;
 const SPEED = 4;
 
 const CHARACTER_HEALTH = 12;
+
+const ACTION_RADIUS = 200;

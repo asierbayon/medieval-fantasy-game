@@ -29,7 +29,8 @@ class Enemy {
         }
 
         this.character = character;
-        this.isCloseToCharacter = false;
+        this.enemyCalled = false;
+        this.isNextToCharacter = false;
 
         this.healthPoints = 2;
 
@@ -55,21 +56,10 @@ class Enemy {
         }
         this.sprite.drawCount++;
         this.animate();
-        
-    }  
 
-    closeness() {
-        if (this.x > this.character.x && this.x < this.character.x + this.character.width / 2) {
-            this.isCloseToCharacter = true;
-        } else if (this.character.x < this.x + this.width / 2 && this.x < this.character.x) {
-            this.isCloseToCharacter = true;
-        } else {
-            this.isCloseToCharacter = false;
-        }
-    }
+    } 
 
     move() {
-        this.closeness();
         if (this.character.isAttacking) {
             this.vx = 0;
             if (this.character.x === this.character.maxX && this.character.movement.right) {
@@ -77,11 +67,11 @@ class Enemy {
             }
         }  else if (this.character.x === this.character.maxX && this.character.movement.right) {
             this.vx = -1;
-        }  else if (this.isCloseToCharacter) {
+        }  else if (this.isNextToCharacter) {
             this.vx = 0;
-        }    else if (this.x > this.character.x) {
+        }    else if (this.x > this.character.x && this.enemyCalled) {
             this.vx = -1;
-        }  else if (this.x < this.character.x) {
+        }  else if (this.x < this.character.x && this.enemyCalled) {
             this.vx = 1;
         }
 
@@ -91,13 +81,13 @@ class Enemy {
       animate() {
         if (this.healthPoints <= 0) {
             this.animateSprite(5, 0, 36, 10);
-        } else if (this.x < this.character.x && !this.isCloseToCharacter) {
+        } else if (this.x < this.character.x && !this.isNextToCharacter) {
         this.animateSprite(2, 0, 7, 10);
-        } else if (this.x > this.character.x && !this.isCloseToCharacter) {
+        } else if (this.x > this.character.x && !this.isNextToCharacter) {
             this.animateSprite(3, 0, 7, 10);
-        } else if (this.x < this.character.x && this.isCloseToCharacter) {
+        } else if (this.x < this.character.x && this.isNextToCharacter) {
             this.animateSprite(0, 0, 17, 5);
-        } else if (this.x > this.character.x && this.isCloseToCharacter) {
+        } else if (this.x > this.character.x && this.isNextToCharacter) {
             this.animateSprite(1, 0, 17, 5);
         }
       }
