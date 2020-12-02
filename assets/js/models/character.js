@@ -99,7 +99,7 @@ class Character {
     move() { 
       if (this.isOnAPlatform) {
         this.maxY = this.platformFloor - this.height;
-      } else if (this.isOffAPlatform) {
+      } else if (this.isOffAPlatform && this.y !== this.ground) {
         this.maxY = this.ground;
         this.vy += GRAVITY;
       }
@@ -136,12 +136,12 @@ class Character {
           this.y = this.maxY;
           this.isJumping = false;
           this.isOffAPlatform = false;
-          this.vy = 0;
+          // this.vy = 0;
         }
       }
 
       animate() {
-        if(this.isAttacking) {
+        if (this.isAttacking) {
           this.animateSprite(6, 0, 21, 10);
         }   else if (this.isJumping && this.lastMovement === 'right') {
                 this.animateSprite(4, 4, 11, 18);
@@ -186,8 +186,8 @@ class Character {
           this.platform = element
           this.isOnAPlatform = true;
           this.platformFloor = element.y;
-        } else if ((this.x > this.platform.x + this.platform.width && this.y === this.platformFloor - this.height) ||
-                    (this.x + this.width < this.platform.x && this.y === this.platformFloor -  this.height)) {
+        } 
+      if (this.isOnAPlatform && (this.x > this.platform.x + this.platform.width || this.x + this.width < this.platform.x)) {
           this.isOnAPlatform = false;
           this.isOffAPlatform = true;
         }
