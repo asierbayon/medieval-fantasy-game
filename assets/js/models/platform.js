@@ -1,11 +1,13 @@
 class Platform {
-    constructor(ctx, x, y, verticalFrameIndex) {
+    constructor(ctx, x, y, verticalFrameIndex, widthProportion) {
         this.ctx = ctx;
 
         this.x = x;
         this.y = y;
 
         this.vx = -2;
+
+        this.widthProportion = widthProportion;
 
         this.sprite = new Image();
         this.sprite.src = 'assets/img/platform_sprites.png';
@@ -17,7 +19,7 @@ class Platform {
         this.sprite.horizontalFrameIndex = 0;
         this.sprite.onload = () => {
             this.sprite.isReady = true;
-            this.sprite.frameWidth = Math.floor(this.sprite.width / this.sprite.horizontalFrames);
+            this.sprite.frameWidth = Math.floor(this.sprite.width  * this.widthProportion);
             this.sprite.frameHeight = Math.floor(this.sprite.height / this.sprite.verticalFrames);
             this.width = this.sprite.frameWidth;
             this.height = this.sprite.frameHeight;
@@ -55,7 +57,7 @@ class Platform {
             this.height
             );
 
-            this.ctx.strokeRect(this.x, this.y, this.sprite.frameWidth, this.sprite.frameHeight)
+            this.ctx.strokeRect(this.x, this.y, this.width, this.sprite.frameHeight)
 
         }
     }  

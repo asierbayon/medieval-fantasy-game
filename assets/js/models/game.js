@@ -12,9 +12,9 @@ class Game {
         this.character = new Character(this.ctx, 15, 410);
         this.enemy = new Enemy(this.ctx, 200, 395, this.character);
         this.platform = [
-            new Platform(this.ctx, 200, 400, 0),
-            new Platform(this.ctx, 450, 350, 1),
-            new Platform(this.ctx, 1000, 400, 0),
+            new Platform(this.ctx, 200, 400, 0, 1/3),
+            new Platform(this.ctx, 300, 350, 1, 2/3),
+            new Platform(this.ctx, 1000, 400, 0, 1/3),
         ];
 
         this.health = [
