@@ -11,7 +11,7 @@ class Game {
         this.background = new Background(this.ctx);
         this.character = new Character(this.ctx, 15, 410);
         this.enemy = [
-            new Enemy(this.ctx, 400, 395, this.character),
+            new Enemy(this.ctx, 600, 395, this.character),
             new Enemy(this.ctx, 1000, 395, this.character)
         ];
         this.platform = [
@@ -103,17 +103,17 @@ class Game {
 
     callEnemy(enemy) {
         if (this.character.x > enemy.x - ACTION_RADIUS && this.character.x < enemy.x + ACTION_RADIUS && enemy.y === this.character.y - 15) {
-            enemy.enemyCalled = true;
+            enemy.state.called = true;
         }
     }
 
     nextToCharacter(enemy) {
         if (enemy.x > this.character.x && enemy.x < this.character.x + this.character.width / 2) {
-            enemy.isNextToCharacter = true;
+            enemy.state.nextToCharacter = true;
         } else if (this.character.x < enemy.x + enemy.width / 2 && enemy.x < this.character.x) {
-            enemy.isNextToCharacter = true;
+            enemy.state.nextToCharacter = true;
         } else {
-            enemy.isNextToCharacter = false;
+            enemy.state.nextToCharacter = false;
         }
     }
 }
