@@ -119,10 +119,15 @@ class Game {
     }
 
     attack() {
+        console.log(this.enemy[0].healthPoints)
         const closeEnemies = this.enemy.filter(enemy => enemy.state.nextToCharacter);
-        if (!this.player.justAttacked && this.player.movement.attack && closeEnemies.length > 0) {
-            closeEnemies.forEach(enemy => enemy.healthPoints--);
-            this.player.justAttacked = true;
+        if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
+            closeEnemies.forEach(enemy => {
+                if (enemy.healthPoints > 0) {
+                    enemy.healthPoints--;
+                }
+            });
+            this.player.alreadyTakenLifeFromOpponent = true;
         }
         const enemiesAttacking = this.enemy.filter(enemy => enemy.state.attacking);
         if (enemiesAttacking.length > 0) {

@@ -8,13 +8,11 @@ class Player extends Character {
         this.movement = {
             up: false,
             right: false,
-            left: false,
-            attack: false
+            left: false
         };
 
         this.state = {
           jumping: false,
-          attacking: false,
           onAPlatform: false,
           offAPlatform: false
         };
@@ -30,8 +28,6 @@ class Player extends Character {
 
         this.healthPoints = CHARACTER_HEALTH;
 
-        this.attackAnimation = false;
-        this.justAttacked = false;
     }
 
     onKeyEvent(event) {
@@ -46,17 +42,16 @@ class Player extends Character {
             case KEY_UP:
                 this.movement.up = state;
                 break;
-            case SPACE:
+            case !this.state.attacking && SPACE:
             // FIX: Si no estoy atacando y pulso space, entonces
             // Change justAttacked = ya he quitado vida al enemigo
-                this.movement.attack = state;
-                this.justAttacked = false;
+                this.state.attacking = true;
+                this.alreadyTakenLifeFromOpponent = false;
                 break;
         }
     }
 
     move() { 
-        this.attack();
         if (this.state.onAPlatform) {
             this.maxY = this.platformFloor - this.height;
         } else if (this.state.offAPlatform && this.y !== this.ground) {
@@ -96,8 +91,8 @@ class Player extends Character {
     }
 
     animate() {
-      if (this.attackAnimation) {
-        this.animateSprite(6, 9, 12, 10);
+      if (this.state.attacking) {
+        this.animateAttack(6, 9, 12, 10);
       }   else if (this.state.jumping && this.lastMovement === 'right') {
               this.animateSprite(4, 4, 11, 18);
         } else if (this.state.jumping && this.lastMovement === 'left') {
@@ -115,14 +110,6 @@ class Player extends Character {
         }
     }
 
-    attack() {
-      if (this.movement.attack) {
-        this.attackAnimation = true;
-      } else if (this.sprite.verticalFrameIndex === this.sprite.initialVerticalIndex && this.sprite.horizontalFrameIndex === this.sprite.maxHorizontalIndex) {
-          this.attackAnimation = false;
-          this.movement.attack = false;
-        }
-    }
 
     onPlatformChecker(element) {
       if (this.x < element.x + element.width &&

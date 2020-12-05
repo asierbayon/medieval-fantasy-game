@@ -29,7 +29,15 @@ class Character {
             this.height = this.sprite.frameHeight;
         }
 
+        this.state = {
+          moving: false,
+          attacking: false,
+          dead: false
+        }
+
         this.healthPoints = healthPoints;
+
+        this.alreadyTakenLifeFromOpponent = false;
     }
 
     isReady() {
@@ -57,8 +65,6 @@ class Character {
         
     }  
 
-    // Create animateAttack() method
-
       animateSprite(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
         this.sprite.maxHorizontalIndex = maxHorizontalIndex;
         this.sprite.initialVerticalIndex = initialVerticalIndex;
@@ -74,6 +80,31 @@ class Character {
                 this.sprite.drawCount = 0;
               }
           }
+    }
+
+    animateAttack(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
+        if (this.sprite.verticalFrameIndex != initialVerticalIndex) {
+            this.sprite.verticalFrameIndex = initialVerticalIndex;
+            this.sprite.horizontalFrameIndex = initialHorizontalIndex;
+          } else if (this.sprite.drawCount % frequency === 0) {
+              if (this.sprite.horizontalFrameIndex < maxHorizontalIndex) {
+                this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1);
+                this.sprite.drawCount = 0;
+              } else {
+                this.state.attacking = false;
+              }
+          }
+    }
+
+    isDead() {
+      if (this.healthPoints <= 0 && !this.state.dead) {
+          this.state.dead = true;
+          this.deadAnimation = true;
+      }
+      
+      if (this.deadAnimation && this.sprite.horizontalFrameIndex === this.sprite.maxHorizontalIndex) {
+          this.deadAnimation = false;
+      }
     }
     
 }

@@ -5,11 +5,8 @@ class Enemy extends Character {
 
         this.character = character;
         this.state = {
-            moving: false,
             nextToCharacter: false,
-            called: false,
-            attacking: false,
-            dead: false
+            called: false
         }
         this.position = {
             left: false,
@@ -80,16 +77,7 @@ class Enemy extends Character {
         }
       }
 
-    isDead() {
-        if (this.healthPoints <= 0 && !this.state.dead) {
-            this.state.dead = true;
-            this.deadAnimation = true;
-        }
-        
-        if (this.deadAnimation && this.sprite.horizontalFrameIndex === this.sprite.maxHorizontalIndex) {
-            this.deadAnimation = false;
-        }
-    }
+
 
     attack() {
         if (this.state.nextToCharacter) {
