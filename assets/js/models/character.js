@@ -65,7 +65,7 @@ class Character {
         
     }  
 
-      animateSprite(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
+    animateSprite(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
         this.sprite.maxHorizontalIndex = maxHorizontalIndex;
         this.sprite.initialVerticalIndex = initialVerticalIndex;
         if (this.sprite.verticalFrameIndex != initialVerticalIndex) {
@@ -82,7 +82,7 @@ class Character {
           }
     }
 
-    animateAttack(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
+    oneTimeAnimation(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
         if (this.sprite.verticalFrameIndex != initialVerticalIndex) {
             this.sprite.verticalFrameIndex = initialVerticalIndex;
             this.sprite.horizontalFrameIndex = initialHorizontalIndex;
@@ -90,20 +90,15 @@ class Character {
               if (this.sprite.horizontalFrameIndex < maxHorizontalIndex) {
                 this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1);
                 this.sprite.drawCount = 0;
-              } else {
+              } else if (this.state.attacking){
                 this.state.attacking = false;
-              }
+              } 
           }
     }
 
     isDead() {
-      if (this.healthPoints <= 0 && !this.state.dead) {
+      if (this.healthPoints <= 0) {
           this.state.dead = true;
-          this.deadAnimation = true;
-      }
-      
-      if (this.deadAnimation && this.sprite.horizontalFrameIndex === this.sprite.maxHorizontalIndex) {
-          this.deadAnimation = false;
       }
     }
     

@@ -62,8 +62,8 @@ class Enemy extends Character {
       }
 
       animate() {
-        if (this.state.dead && this.deadAnimation) {
-            this.animateSprite(5, 0, 36, 10);
+        if (this.state.dead) {
+            this.oneTimeAnimation(5, 0, 36, 10);
         } else if (this.state.dead && !this.deadAnimation) {
             this.animateSprite(5, 36, 36, 0)
         } else if (this.position.right && this.state.moving) {

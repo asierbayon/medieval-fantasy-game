@@ -86,13 +86,12 @@ class Player extends Character {
             this.y = this.maxY;
             this.state.jumping = false;
             this.state.offAPlatform = false;
-            // this.vy = 0;
         }
     }
 
     animate() {
       if (this.state.attacking) {
-        this.animateAttack(6, 9, 12, 10);
+        this.oneTimeAnimation(6, 9, 12, 10);
       }   else if (this.state.jumping && this.lastMovement === 'right') {
               this.animateSprite(4, 4, 11, 18);
         } else if (this.state.jumping && this.lastMovement === 'left') {
