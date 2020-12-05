@@ -20,6 +20,7 @@ class Character {
         this.sprite.verticalFrameIndex = 0;
         this.sprite.horizontalFrameIndex = 0;
         this.maxHorizontalIndex = this.horizontalFrames;
+        this.initialVerticalIndex = 0;
         this.sprite.drawCount = 0;
         this.sprite.onload = () => {
             this.sprite.isReady = true;
@@ -36,12 +37,15 @@ class Character {
             attack: false
         }
 
-        this.isJumping = false;
-        this.lastMovement = 'right';
-        this.isAttacking = false;
+        this.state = {
+          jumping: false,
+          attacking: false,
+          onAPlatform: false,
+          offAPlatform: false
+        }
 
-        this.isOnAPlatform = false;
-        this.isOffAPlatform = false;
+        this.lastMovement = 'right';
+
         this.platformFloor = 0;
         this.platform = {
           x: undefined,
@@ -50,6 +54,9 @@ class Character {
         };
 
         this.healthPoints = CHARACTER_HEALTH;
+
+        this.attackAnimation = false;
+        this.justAttacked = false;
 
     }
 
@@ -71,6 +78,7 @@ class Character {
                 break;
             case SPACE:
                 this.movement.attack = state;
+                this.justAttacked = false;
                 break;
         }
     }
@@ -97,70 +105,68 @@ class Character {
     }  
 
     move() { 
-      if (this.isOnAPlatform) {
+      this.attack();
+      if (this.state.onAPlatform) {
         this.maxY = this.platformFloor - this.height;
-      } else if (this.isOffAPlatform && this.y !== this.ground) {
+      } else if (this.state.offAPlatform && this.y !== this.ground) {
         this.maxY = this.ground;
         this.vy += GRAVITY;
       }
 
-      if (this.movement.attack) {
-        this.isAttacking = true;
+      if (this.movement.up && !this.state.jumping) {
+          this.state.jumping = true;
+          this.vy = -8;
+      }   else if (this.state.jumping) {
+          this.vy += GRAVITY;
       }
 
-      
-        if (this.movement.up && !this.isJumping) {
-            this.isJumping = true;
-            this.vy = -8;
-        }   else if (this.isJumping) {
-            this.vy += GRAVITY;
-        }
+      if (this.movement.right) {
+        this.vx = SPEED;
+      } else if (this.movement.left) {
+        this.vx = -SPEED;
+      } else {
+        this.vx = 0;
+      }
+    
+      this.x += this.vx;
+      this.y += this.vy;
+  
+      if (this.x >= this.maxX) {
+        this.x = this.maxX;
+      } else if (this.x <= this.minX) {
+        this.x = this.minX;
+      }
+      if (this.y >= this.maxY) {
+        this.y = this.maxY;
+        this.state.jumping = false;
+        this.state.offAPlatform = false;
+        // this.vy = 0;
+      }
+      }
 
-        if (this.movement.right) {
-          this.vx = SPEED;
+    animate() {
+      if (this.attackAnimation) {
+        this.animateSprite(6, 9, 12, 10);
+      }   else if (this.state.jumping && this.lastMovement === 'right') {
+              this.animateSprite(4, 4, 11, 18);
+        } else if (this.state.jumping && this.lastMovement === 'left') {
+              this.animateSprite(5, 4, 11, 18);
+        } else if (this.movement.right) {
+              this.animateSprite(2, 0, 7, 10);
+              this.lastMovement = 'right';
         } else if (this.movement.left) {
-          this.vx = -SPEED;
+              this.animateSprite(3, 0, 7, 10);
+              this.lastMovement = 'left';
+        } else if (this.lastMovement === 'left') {
+              this.animateSprite(1, 0, 14, 5);
         } else {
-          this.vx = 0;
+              this.animateSprite(0, 0, 14, 5);
         }
-    
-        this.x += this.vx;
-        this.y += this.vy;
-    
-        if (this.x >= this.maxX) {
-          this.x = this.maxX;
-        } else if (this.x <= this.minX) {
-          this.x = this.minX;
-        }
-        if (this.y >= this.maxY) {
-          this.y = this.maxY;
-          this.isJumping = false;
-          this.isOffAPlatform = false;
-          // this.vy = 0;
-        }
-      }
-
-      animate() {
-        if (this.isAttacking) {
-          this.animateSprite(6, 0, 21, 10);
-        }   else if (this.isJumping && this.lastMovement === 'right') {
-                this.animateSprite(4, 4, 11, 18);
-          } else if (this.isJumping && this.lastMovement === 'left') {
-                this.animateSprite(5, 4, 11, 18);
-          } else if (this.movement.right) {
-                this.animateSprite(2, 0, 7, 10);
-                this.lastMovement = 'right';
-          } else if (this.movement.left) {
-                this.animateSprite(3, 0, 7, 10);
-                this.lastMovement = 'left';
-          } else if (this.lastMovement === 'left') {
-                this.animateSprite(1, 0, 14, 5);
-          } else {
-                this.animateSprite(0, 0, 14, 5);
-          }
-      }
+    }
 
       animateSprite(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
+        this.maxHorizontalIndex = maxHorizontalIndex;
+        this.initialVerticalIndex = initialVerticalIndex;
         if (this.sprite.verticalFrameIndex != initialVerticalIndex) {
             this.sprite.verticalFrameIndex = initialVerticalIndex;
             this.sprite.horizontalFrameIndex = initialHorizontalIndex;
@@ -176,7 +182,12 @@ class Character {
     }
 
     attack() {
-      return this.isAttacking;
+      if (this.movement.attack) {
+        this.attackAnimation = true;
+      } else if (this.sprite.verticalFrameIndex === this.initialVerticalIndex && this.sprite.horizontalFrameIndex === this.maxHorizontalIndex) {
+          this.attackAnimation = false;
+          this.movement.attack = false;
+        }
     }
 
     onPlatformChecker(element) {
@@ -184,12 +195,12 @@ class Character {
         this.x + this.width > element.x &&
         this.y + this.height < element.y) {
           this.platform = element
-          this.isOnAPlatform = true;
+          this.state.onAPlatform = true;
           this.platformFloor = element.y;
         } 
-      if (this.isOnAPlatform && (this.x > this.platform.x + this.platform.width || this.x + this.width < this.platform.x)) {
-          this.isOnAPlatform = false;
-          this.isOffAPlatform = true;
+      if (this.state.onAPlatform && (this.x > this.platform.x + this.platform.width || this.x + this.width < this.platform.x)) {
+          this.state.onAPlatform = false;
+          this.state.offAPlatform = true;
         }
   }
 

@@ -18,7 +18,8 @@ class Enemy {
         this.sprite.verticalFrames = 6;
         this.sprite.verticalFrameIndex = 0;
         this.sprite.horizontalFrameIndex = 0;
-        this.maxHorizontalIndex = this.horizontalFrames;
+        this.maxHorizontalIndex = this.sprite.horizontalFrames;
+        this.initialVerticalIndex = 0;
         this.sprite.drawCount = 0;
         this.sprite.onload = () => {
             this.sprite.isReady = true;
@@ -32,7 +33,8 @@ class Enemy {
         this.state = {
             moving: false,
             nextToCharacter: false,
-            called: false
+            called: false,
+            dead: false
         }
 
         this.position = {
@@ -41,6 +43,8 @@ class Enemy {
         }
 
         this.healthPoints = 2;
+
+        this.deadAnimation = false;
 
     }
 
@@ -87,6 +91,7 @@ class Enemy {
 
         this.checkMovement();
         this.checkRelativePosition();
+        this.isDead();
       }
 
       checkRelativePosition() {
@@ -107,8 +112,10 @@ class Enemy {
       }
 
       animate() {
-        if (this.healthPoints <= 0) {
+        if (this.state.dead && this.deadAnimation) {
             this.animateSprite(5, 0, 36, 10);
+        } else if (this.state.dead && !this.deadAnimation) {
+            this.animateSprite(5, 36, 36, 0)
         } else if (this.position.right && this.state.moving) {
             this.animateSprite(2, 0, 7, 10);
         } else if (this.position.left && this.state.moving) {
@@ -121,6 +128,8 @@ class Enemy {
       }
 
       animateSprite(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
+        this.maxHorizontalIndex = maxHorizontalIndex;
+        this.initialVerticalIndex = initialVerticalIndex;
         if (this.sprite.verticalFrameIndex != initialVerticalIndex) {
             this.sprite.verticalFrameIndex = initialVerticalIndex;
             this.sprite.horizontalFrameIndex = initialHorizontalIndex;
@@ -133,6 +142,17 @@ class Enemy {
                 this.sprite.drawCount = 0;
               }
           }
+    }
+
+    isDead() {
+        if (this.healthPoints <= 0 && !this.state.dead) {
+            this.state.dead = true;
+            this.deadAnimation = true;
+        }
+        
+        if (this.deadAnimation && this.sprite.horizontalFrameIndex === this.maxHorizontalIndex) {
+            this.deadAnimation = false;
+        }
     }
 
 }

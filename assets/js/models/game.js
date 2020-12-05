@@ -39,6 +39,7 @@ class Game {
                 this.draw();
                 this.eliminateEnemies();
                 this.collisionChecker();
+                this.attack();
             }, this.fps);
         }
     };
@@ -114,6 +115,13 @@ class Game {
             enemy.state.nextToCharacter = true;
         } else {
             enemy.state.nextToCharacter = false;
+        }
+    }
+
+    attack() {
+        if (!this.character.justAttacked && this.character.movement.attack && this.enemy.filter(enemy => enemy.state.nextToCharacter).length > 0) {
+            this.enemy[0].healthPoints--;
+            this.character.justAttacked = true;
         }
     }
 }
