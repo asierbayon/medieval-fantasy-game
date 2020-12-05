@@ -72,7 +72,11 @@ class Enemy {
     } 
 
     move() {
-        if (this.character.x >= this.character.maxX && this.character.movement.right && this.position.left && !this.state.moving) {
+        if (this.state.dead && this.character.x >= this.character.maxX && this.character.movement.right) {
+            this.vx = -2;
+        } else if (this.state.dead) {
+            this.vx = 0;
+        }   else if (this.character.x >= this.character.maxX && this.character.movement.right && this.position.left && !this.state.moving) {
             this.vx = -2;
         }   else if (this.character.x >= this.character.maxX && this.character.movement.right && this.position.left && this.state.moving) {
             this.vx = -3;
