@@ -9,10 +9,10 @@ class Game {
         this.fps = 1000 / 60
 
         this.background = new Background(this.ctx);
-        this.player = new Player(this.ctx, 25, 410, this.ctx.canvas.width / 2, 'knight_sprites.png', 22, 10, 12);
+        this.player = new Player(this.ctx, 25, 410, 'knight_sprites.png', 22, 10, 12);
         this.enemy = [
-            new Enemy(this.ctx, 600, 395, this.canvas.width, 'king_sprites.png', 37, 6, this.player, 2),
-            new Enemy(this.ctx, 1000, 395, this.canvas.width, 'king_sprites.png', 37, 6, this.player, 2)
+            new Bat(this.ctx, 600, 390, this.player, 'bat_sprites.png'),
+            new Bat(this.ctx, 1000, 390,this.player, 'bat_sprites.png')
         ];
         this.platform = [
             new Platform(this.ctx, 200, 400, 0, 1/3),
@@ -24,7 +24,7 @@ class Game {
             new Health(this.ctx, 20, 20),
             new Health(this.ctx, 45, 20),
             new Health(this.ctx, 70, 20)
-        ]
+        ];
 
         this.health[0].sprite.horizontalFrameIndex = 0;
         this.health[1].sprite.horizontalFrameIndex = 0;
@@ -40,6 +40,7 @@ class Game {
                 this.eliminateEnemies();
                 this.collisionChecker();
                 this.attack();
+                this.checkHealth();
             }, this.fps);
         }
     };
@@ -103,7 +104,7 @@ class Game {
     }
 
     callEnemy(enemy) {
-        if (this.player.x > enemy.x - ACTION_RADIUS && this.player.x < enemy.x + ACTION_RADIUS && enemy.y === this.player.y - 15) {
+        if (this.player.x > enemy.x - ACTION_RADIUS && this.player.x < enemy.x + ACTION_RADIUS /* && enemy.y === this.player.y - 15 */) {
             enemy.state.called = true;
         }
     }
@@ -119,7 +120,7 @@ class Game {
     }
 
     attack() {
-        console.log(this.enemy[0].healthPoints)
+        console.log(this.player.healthPoints)
         const closeEnemies = this.enemy.filter(enemy => enemy.state.nextToCharacter);
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
             closeEnemies.forEach(enemy => {
@@ -128,10 +129,15 @@ class Game {
                 }
             });
             this.player.alreadyTakenLifeFromOpponent = true;
-        }
-        const enemiesAttacking = this.enemy.filter(enemy => enemy.state.attacking);
-        if (enemiesAttacking.length > 0) {
-            this.player.healthPoints--;
-        }
+        };
+
+        closeEnemies.forEach(enemy => {
+            if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent && this.player.healthPoints > 0) {
+                this.player.healthPoints--;
+                enemy.alreadyTakenLifeFromOpponent = true;
+            } else if (enemy.sprite.horizontalFrameIndex === enemy.sprite.initialHorizontalIndex) {
+                enemy.alreadyTakenLifeFromOpponent = false;
+            }
+        })
     }
 }

@@ -1,8 +1,9 @@
 class Enemy extends Character {
 
-    constructor(ctx, x, y, maxX, sprite, horizontalFrames, verticalFrames, character, healthPoints) {
-        super(ctx, x, y, maxX, sprite, horizontalFrames, verticalFrames, healthPoints)
+    constructor(ctx, x, y, character, sprite) {
+        super(ctx, x, y, sprite)
 
+        this.maxX = this.ctx.canvas.width;
         this.character = character;
         this.state = {
             nextToCharacter: false,
@@ -13,10 +14,14 @@ class Enemy extends Character {
             right: true
         }
         this.deadAnimation = false;
+
+        // maxX to be removed
     }
 
 
     move() {
+
+        // character properties to be evalued @ game
         if (this.state.dead && this.character.x >= this.character.maxX && this.character.movement.right) {
             this.vx = -2;
         } else if (this.state.dead) {
@@ -41,7 +46,6 @@ class Enemy extends Character {
         this.checkMovement();
         this.checkRelativePosition();
         this.isDead();
-        this.attack();
       }
 
       checkRelativePosition() {
@@ -65,7 +69,7 @@ class Enemy extends Character {
         if (this.state.dead) {
             this.oneTimeAnimation(5, 0, 36, 10);
         } else if (this.state.dead && !this.deadAnimation) {
-            this.animateSprite(5, 36, 36, 0)
+            this.animateSprite(5, 36, 36, 0) //change this
         } else if (this.position.right && this.state.moving) {
             this.animateSprite(2, 0, 7, 10);
         } else if (this.position.left && this.state.moving) {
@@ -76,13 +80,5 @@ class Enemy extends Character {
             this.animateSprite(1, 0, 17, 5);
         }
       }
-
-
-
-    attack() {
-        if (this.state.nextToCharacter) {
-            this.state.attacking = true;
-        }
-    }
 
 }

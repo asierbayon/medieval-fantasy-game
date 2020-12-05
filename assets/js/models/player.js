@@ -3,6 +3,7 @@ class Player extends Character {
     constructor(ctx, x, y, maxX, sprite, horizontalFrames, verticalFrames) {
         super(ctx, x, y, maxX, sprite, horizontalFrames, verticalFrames);
 
+
         this.ground = this.y;
 
         this.movement = {
@@ -43,8 +44,6 @@ class Player extends Character {
                 this.movement.up = state;
                 break;
             case !this.state.attacking && SPACE:
-            // FIX: Si no estoy atacando y pulso space, entonces
-            // Change justAttacked = ya he quitado vida al enemigo
                 this.state.attacking = true;
                 this.alreadyTakenLifeFromOpponent = false;
                 break;

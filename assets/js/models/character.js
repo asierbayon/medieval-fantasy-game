@@ -1,10 +1,10 @@
 class Character {
 
-    constructor(ctx, x, y, maxX, sprite, horizontalFrames, verticalFrames, healthPoints) {
+    constructor(ctx, x, y, sprite, horizontalFrames, verticalFrames, healthPoints) {
         this.ctx = ctx;
         this.x = x;
         this.vx = 0;
-        this.maxX = maxX;
+        this.maxX = this.ctx.canvas.width / 2;
         this.minX = 0;
 
         this.y = y;
@@ -20,6 +20,7 @@ class Character {
         this.sprite.horizontalFrameIndex = 0;
         this.sprite.maxHorizontalIndex = this.sprite.horizontalFrames;
         this.sprite.initialVerticalIndex = 0;
+        this.sprite.initialHorizontalIndex = 0;
         this.sprite.drawCount = 0;
         this.sprite.onload = () => {
             this.sprite.isReady = true;
@@ -36,6 +37,7 @@ class Character {
         }
 
         this.healthPoints = healthPoints;
+        this.deadAnimated = false;
 
         this.alreadyTakenLifeFromOpponent = false;
     }
@@ -68,6 +70,7 @@ class Character {
     animateSprite(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
         this.sprite.maxHorizontalIndex = maxHorizontalIndex;
         this.sprite.initialVerticalIndex = initialVerticalIndex;
+        this.sprite.initialHorizontalIndex = initialHorizontalIndex;
         if (this.sprite.verticalFrameIndex != initialVerticalIndex) {
             this.sprite.verticalFrameIndex = initialVerticalIndex;
             this.sprite.horizontalFrameIndex = initialHorizontalIndex;
@@ -83,17 +86,19 @@ class Character {
     }
 
     oneTimeAnimation(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
-        if (this.sprite.verticalFrameIndex != initialVerticalIndex) {
+          if (this.sprite.verticalFrameIndex !== initialVerticalIndex) {
             this.sprite.verticalFrameIndex = initialVerticalIndex;
             this.sprite.horizontalFrameIndex = initialHorizontalIndex;
           } else if (this.sprite.drawCount % frequency === 0) {
               if (this.sprite.horizontalFrameIndex < maxHorizontalIndex) {
                 this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1);
                 this.sprite.drawCount = 0;
-              } else if (this.state.attacking){
+              } else if (this.state.attacking) {
                 this.state.attacking = false;
-              } 
-          }
+              } else {
+                this.deadAnimated = true;
+              }
+          }   
     }
 
     isDead() {
@@ -101,5 +106,5 @@ class Character {
           this.state.dead = true;
       }
     }
-    
+
 }
