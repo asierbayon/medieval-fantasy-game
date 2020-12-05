@@ -9,10 +9,10 @@ class Game {
         this.fps = 1000 / 60
 
         this.background = new Background(this.ctx);
-        this.character = new Character(this.ctx, 15, 410);
+        this.player = new Player(this.ctx, 25, 410, this.ctx.canvas.width / 2, 'knight_sprites.png', 22, 10, 12);
         this.enemy = [
-            new Enemy(this.ctx, 600, 395, this.character),
-            new Enemy(this.ctx, 1000, 395, this.character)
+            new Enemy(this.ctx, 600, 395, this.canvas.width, 'king_sprites.png', 37, 6, this.player, 2),
+            new Enemy(this.ctx, 1000, 395, this.canvas.width, 'king_sprites.png', 37, 6, this.player, 2)
         ];
         this.platform = [
             new Platform(this.ctx, 200, 400, 0, 1/3),
@@ -46,7 +46,7 @@ class Game {
 
     onKeyEvent(event) {
         this.background.onKeyEvent(event);
-        this.character.onKeyEvent(event);
+        this.player.onKeyEvent(event);
         this.platform.forEach(platform => platform.onKeyEvent(event));
     }
 
@@ -62,22 +62,22 @@ class Game {
     draw() {
         this.background.draw();
         this.platform.forEach(platform => platform.draw());
-        this.character.draw();
+        this.player.draw();
         this.enemy.forEach(enemy => enemy.draw());
         this.health.forEach(heart => heart.draw());
     }
 
     move() {
-        if (this.character.x >= this.character.maxX) {
+        if (this.player.x >= this.player.maxX) {
             this.background.move();
             this.platform.forEach(platform => platform.move());
           }
-        this.character.move();
+        this.player.move();
         this.enemy.forEach(enemy => enemy.move());
     }
 
     checkHealth() {
-        const lostHealth = CHARACTER_HEALTH - this.character.healthPoints;
+        const lostHealth = CHARACTER_HEALTH - this.player.healthPoints;
         if (lostHealth <= 4) {
             this.health[2].sprite.horizontalFrameIndex = lostHealth;
         } else if (lostHealth > 4 && lostHealth <= 8) {
@@ -91,27 +91,27 @@ class Game {
     }
 
     eliminateEnemies() {
-        if (this.character.isAttacking) {
+        if (this.player.isAttacking) {
             this.enemy.healthPoints = 0;
         }
     }
 
     collisionChecker() {
-        this.platform.forEach(platform => this.character.onPlatformChecker(platform));
+        this.platform.forEach(platform => this.player.onPlatformChecker(platform));
         this.enemy.forEach(enemy => this.callEnemy(enemy));
         this.enemy.forEach(enemy => this.nextToCharacter(enemy));
     }
 
     callEnemy(enemy) {
-        if (this.character.x > enemy.x - ACTION_RADIUS && this.character.x < enemy.x + ACTION_RADIUS && enemy.y === this.character.y - 15) {
+        if (this.player.x > enemy.x - ACTION_RADIUS && this.player.x < enemy.x + ACTION_RADIUS && enemy.y === this.player.y - 15) {
             enemy.state.called = true;
         }
     }
 
     nextToCharacter(enemy) {
-        if (enemy.x > this.character.x && enemy.x < this.character.x + this.character.width / 2) {
+        if (enemy.x > this.player.x && enemy.x < this.player.x + this.player.width / 2) {
             enemy.state.nextToCharacter = true;
-        } else if (this.character.x < enemy.x + enemy.width / 2 && enemy.x < this.character.x) {
+        } else if (this.player.x < enemy.x + enemy.width / 2 && enemy.x < this.player.x) {
             enemy.state.nextToCharacter = true;
         } else {
             enemy.state.nextToCharacter = false;
@@ -119,9 +119,14 @@ class Game {
     }
 
     attack() {
-        if (!this.character.justAttacked && this.character.movement.attack && this.enemy.filter(enemy => enemy.state.nextToCharacter).length > 0) {
-            this.enemy[0].healthPoints--;
-            this.character.justAttacked = true;
+        const closeEnemies = this.enemy.filter(enemy => enemy.state.nextToCharacter);
+        if (!this.player.justAttacked && this.player.movement.attack && closeEnemies.length > 0) {
+            closeEnemies.forEach(enemy => enemy.healthPoints--);
+            this.player.justAttacked = true;
+        }
+        const enemiesAttacking = this.enemy.filter(enemy => enemy.state.attacking);
+        if (enemiesAttacking.length > 0) {
+            this.player.healthPoints--;
         }
     }
 }
