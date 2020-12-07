@@ -10,7 +10,7 @@ class Background {
         this.footerH = this.h * 0.1;
         this.footerY = this.h - this.footerH;
 
-        this.vx = -2;
+        this.vx = BACKGROUND_SPEED;
 
         this.bgImg = new Image();
         this.bgImg.src = 'assets/img/background_glacial_mountains.png';

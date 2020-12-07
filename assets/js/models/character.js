@@ -1,18 +1,19 @@
 class Character {
 
-    constructor(ctx, x, y, sprite, horizontalFrames, verticalFrames, healthPoints) {
+    constructor(ctx, x, y, sprite, horizontalFrames, verticalFrames) {
         this.ctx = ctx;
         this.x = x;
         this.vx = 0;
-        this.maxX = this.ctx.canvas.width / 2;
+        this.maxX = this.ctx.canvas.width;
         this.minX = 0;
 
         this.y = y;
         this.vy = 0;
         this.maxY = this.y;
+        this.movingBackground = false; // do I need this?
 
         this.sprite = new Image();
-        this.sprite.src = `assets/img/${sprite}`;
+        this.sprite.src = `assets/img/${sprite}_sprites.png`;
         this.sprite.isReady = false;
         this.sprite.horizontalFrames = horizontalFrames;
         this.sprite.verticalFrames = verticalFrames;
@@ -36,7 +37,6 @@ class Character {
           dead: false
         }
 
-        this.healthPoints = healthPoints;
         this.deadAnimated = false;
 
         this.alreadyTakenLifeFromOpponent = false;

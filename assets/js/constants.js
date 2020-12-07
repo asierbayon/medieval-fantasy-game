@@ -7,6 +7,15 @@ const SPACE = 32;
 const GRAVITY = 0.4; 
 
 const SPEED = 4;
+const BACKGROUND_SPEED = -2;
+
+const BAT_HEALTH = 1;
+const BAT_SPEED = 3.5;
+const BAT_ATTACK = 1;
+
+const WOLF_HEALTH = 2;
+const WOLF_SPEED = 3;
+const WOLF_ATTACK = 2;
 
 const CHARACTER_HEALTH = 12;
 

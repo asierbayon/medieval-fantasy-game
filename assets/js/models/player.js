@@ -1,11 +1,11 @@
 class Player extends Character {
 
-    constructor(ctx, x, y, maxX, sprite, horizontalFrames, verticalFrames) {
-        super(ctx, x, y, maxX, sprite, horizontalFrames, verticalFrames);
+    constructor(ctx, x, y, horizontalFrames, verticalFrames) {
+        super(ctx, x, y, 'knight', horizontalFrames, verticalFrames);
 
 
         this.ground = this.y;
-
+        this.maxX = this.ctx.canvas.width / 2;
         this.movement = {
             up: false,
             right: false,

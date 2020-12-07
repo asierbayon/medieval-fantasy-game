@@ -9,10 +9,10 @@ class Game {
         this.fps = 1000 / 60
 
         this.background = new Background(this.ctx);
-        this.player = new Player(this.ctx, 25, 410, 'knight_sprites.png', 22, 10, 12);
+        this.player = new Player(this.ctx, 25, 410, 22, 10, 12);
         this.enemy = [
-            new Bat(this.ctx, 600, 390, this.player, 'bat_sprites.png'),
-            new Bat(this.ctx, 1000, 390,this.player, 'bat_sprites.png')
+            new Bat(this.ctx, 600, 390),
+            new Wolf(this.ctx, 1000, 422)
         ];
         this.platform = [
             new Platform(this.ctx, 200, 400, 0, 1/3),
@@ -26,9 +26,7 @@ class Game {
             new Health(this.ctx, 70, 20)
         ];
 
-        this.health[0].sprite.horizontalFrameIndex = 0;
-        this.health[1].sprite.horizontalFrameIndex = 0;
-        this.health[2].sprite.horizontalFrameIndex = 0;
+        this.health.forEach(heart => heart.sprite.horizontalFrameIndex = 0);
     }
 
     start() {
@@ -37,7 +35,6 @@ class Game {
                 this.clear();
                 this.move();
                 this.draw();
-                this.eliminateEnemies();
                 this.collisionChecker();
                 this.attack();
                 this.checkHealth();
@@ -74,7 +71,7 @@ class Game {
             this.platform.forEach(platform => platform.move());
           }
         this.player.move();
-        this.enemy.forEach(enemy => enemy.move());
+        this.enemy.forEach(enemy => enemy.move(this.player));
     }
 
     checkHealth() {
@@ -91,12 +88,6 @@ class Game {
         }
     }
 
-    eliminateEnemies() {
-        if (this.player.isAttacking) {
-            this.enemy.healthPoints = 0; //correct this
-        }
-    }
-
     collisionChecker() {
         this.platform.forEach(platform => this.player.onPlatformChecker(platform));
         this.enemy.forEach(enemy => this.callEnemy(enemy));
@@ -104,24 +95,54 @@ class Game {
     }
 
     callEnemy(enemy) {
-        if (this.player.x > enemy.x - ACTION_RADIUS && this.player.x < enemy.x + ACTION_RADIUS /* && enemy.y === this.player.y - 15 */) {
+        if (this.player.x > enemy.x - ACTION_RADIUS && this.player.x < enemy.x + ACTION_RADIUS && enemy.inline.horizontally) {
             enemy.state.called = true;
         }
     }
 
     nextToCharacter(enemy) {
-        if (enemy.x > this.player.x && enemy.x < this.player.x + this.player.width / 2) {
+        this.sideOfPlayerIsEnemyOn();
+        this.inlineChecker();
+        /* if (enemy.x > this.player.x && enemy.x < this.player.x + this.player.width / 2) {
             enemy.state.nextToCharacter = true;
         } else if (this.player.x < enemy.x + enemy.width / 2 && enemy.x < this.player.x) {
             enemy.state.nextToCharacter = true;
         } else {
             enemy.state.nextToCharacter = false;
-        }
+        } */
+    }
+
+    inlineChecker() {
+        const enemiesOnScreen = this.enemy.filter(enemy => enemy.x <= this.canvas.width && enemy.x + enemy.width >= 0);
+        enemiesOnScreen.forEach(enemy => {
+            if (enemy.y + enemy.height / 2 >= this.player.y && enemy.y + enemy.height / 2 <= this.player.y + this.player.height) {
+                enemy.inline.horizontally = true;
+            } else {
+                enemy.inline.horizontally = false;
+            }
+
+            if ((enemy.x >= this.player.x && enemy.x <= this.player.x + this.player.width / 2) || (enemy.x + enemy.width >= this.player.x && enemy.x <= this.player.x / 2)) {
+                enemy.inline.vertically = true;
+            } else {
+                enemy.inline.vertically = false;
+            }
+        })
+        
+    }
+
+    sideOfPlayerIsEnemyOn() {
+        this.enemy.forEach(enemy => {
+            if (enemy.x > this.player.x) {
+              enemy.position.left = false;
+              enemy.position.right = true;
+          } else {
+              enemy.position.left = true;
+              enemy.position.right = false;
+          }
+        });
     }
 
     attack() {
-
-        console.log(this.enemy[0].state.dead)
         const closeEnemies = this.enemy.filter(enemy => enemy.state.nextToCharacter);
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
             closeEnemies.forEach(enemy => {
@@ -133,7 +154,7 @@ class Game {
         };
 
         closeEnemies.forEach(enemy => {
-            if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent && this.player.healthPoints > 0) {
+            if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent && this.player.healthPoints > 0 && !enemy.state.dead && enemy.inline.horizontally) {
                 this.player.healthPoints--;
                 enemy.alreadyTakenLifeFromOpponent = true;
             } else if (enemy.sprite.horizontalFrameIndex === enemy.sprite.initialHorizontalIndex) {
