@@ -143,7 +143,8 @@ class Game {
     }
 
     attack() {
-        const closeEnemies = this.enemy.filter(enemy => enemy.state.nextToCharacter);
+        const closeEnemies = this.enemy.filter(enemy => enemy.inline.vertically && enemy.inline.horizontally);
+        console.log(closeEnemies)
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
             closeEnemies.forEach(enemy => {
                 if (!enemy.state.dead) {
@@ -154,7 +155,7 @@ class Game {
         };
 
         closeEnemies.forEach(enemy => {
-            if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent && this.player.healthPoints > 0 && !enemy.state.dead && enemy.inline.horizontally) {
+            if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent) {
                 this.player.healthPoints--;
                 enemy.alreadyTakenLifeFromOpponent = true;
             } else if (enemy.sprite.horizontalFrameIndex === enemy.sprite.initialHorizontalIndex) {
