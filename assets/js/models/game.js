@@ -93,7 +93,7 @@ class Game {
 
     eliminateEnemies() {
         if (this.player.isAttacking) {
-            this.enemy.healthPoints = 0;
+            this.enemy.healthPoints = 0; //correct this
         }
     }
 
@@ -120,11 +120,12 @@ class Game {
     }
 
     attack() {
-        console.log(this.player.healthPoints)
+
+        console.log(this.enemy[0].state.dead)
         const closeEnemies = this.enemy.filter(enemy => enemy.state.nextToCharacter);
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
             closeEnemies.forEach(enemy => {
-                if (enemy.healthPoints > 0) {
+                if (!enemy.state.dead) {
                     enemy.healthPoints--;
                 }
             });
