@@ -15,9 +15,9 @@ class Bat extends Enemy {
             this.oneTimeAnimation(3, 0, 8, 10);
         } else if (this.state.dead && this.deadAnimated) {
             this.animateSprite(2, 8, 8, 0)
-        } else if (this.inline.vertically && this.inline.horizontally && this.position.left) {
+        } else if (this.state.nextToCharacter && this.position.left) {
             this.animateSprite(4, 0, 9, 10);
-        }  else if (this.inline.vertically && this.inline.horizontally && this.position.right) {
+        }  else if (this.state.nextToCharacter && this.position.right) {
             this.animateSprite(5, 0, 9, 10);
         } else if (this.position.left) {
             this.animateSprite(0, 0, 7, 4);

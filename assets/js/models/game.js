@@ -104,6 +104,13 @@ class Game {
     nextToCharacter() {
         this.sideOfPlayerIsEnemyOn();
         this.inlineChecker();
+        this.enemy.forEach(enemy => {
+            if (enemy.inline.vertically && enemy.inline.horizontally) {
+            enemy.state.nextToCharacter = true;
+            } else {
+            enemy.state.nextToCharacter = false;
+            }
+        })
     }
 
     inlineChecker() {
@@ -139,16 +146,13 @@ class Game {
     
 
     attack() {
-        const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.inline.vertically && enemy.inline.horizontally);
-        console.log()
+        const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.state.nextToCharacter);
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
-            console.log(this.setTarget())
             this.setTarget().healthPoints -= this.player.damagePoints;
             this.player.alreadyTakenLifeFromOpponent = true;
         };
 
         closeEnemies.forEach(enemy => {
-            
             if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent && !enemy.state.dead && !this.player.state.dead) {
                 this.player.healthPoints -= enemy.damagePoints;
                 enemy.alreadyTakenLifeFromOpponent = true;

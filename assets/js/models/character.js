@@ -46,6 +46,11 @@ class Character {
         return this.sprite.isReady;
     }
 
+    isMoving() {
+      if (this.vx !==0) this.state.moving = true;
+      else this.state.moving = false;
+    }
+
     draw() {
         if (this.sprite.isReady) {
           this.ctx.drawImage(
