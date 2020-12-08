@@ -16,7 +16,10 @@ class Player extends Character {
         this.state.onAPlatform = false;
         this.state.offAPlatform = false;
 
-        this.lastMovement = 'right';
+        this.lastMovement = {
+            right: true,
+            left: false
+        };
 
         this.platformFloor = 0;
         this.platform = {
@@ -35,9 +38,13 @@ class Player extends Character {
         switch (event.keyCode) {
             case KEY_RIGHT:
                 this.movement.right = state;
+                this.lastMovement.right = true;
+                this.lastMovement.left = false;
                 break;
             case KEY_LEFT:
                 this.movement.left = state;
+                this.lastMovement.right = false;
+                this.lastMovement.left = true;
                 break;
             case KEY_UP:
                 this.movement.up = state;
@@ -49,7 +56,9 @@ class Player extends Character {
         }
     }
 
+
     move() { 
+        
         if (this.state.onAPlatform) {
             this.maxY = this.platformFloor - this.height;
         } else if (this.state.offAPlatform && this.y !== this.ground) {
@@ -90,17 +99,15 @@ class Player extends Character {
     animate() {
       if (this.state.attacking) {
         this.oneTimeAnimation(6, 9, 12, 10);
-      }   else if (this.state.jumping && this.lastMovement === 'right') {
+      }   else if (this.state.jumping && this.lastMovement.right) {
               this.animateSprite(4, 4, 11, 18);
-        } else if (this.state.jumping && this.lastMovement === 'left') {
+        } else if (this.state.jumping && this.lastMovement.left) {
               this.animateSprite(5, 4, 11, 18);
         } else if (this.movement.right) {
               this.animateSprite(2, 0, 7, 10);
-              this.lastMovement = 'right';
         } else if (this.movement.left) {
               this.animateSprite(3, 0, 7, 10);
-              this.lastMovement = 'left';
-        } else if (this.lastMovement === 'left') {
+        } else if (this.lastMovement.left) {
               this.animateSprite(1, 0, 14, 5);
         } else {
               this.animateSprite(0, 0, 14, 5);

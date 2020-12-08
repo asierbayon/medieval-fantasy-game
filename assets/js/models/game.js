@@ -146,7 +146,7 @@ class Game {
     
 
     attack() {
-        const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.state.nextToCharacter);
+        const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.state.nextToCharacter && this.lookingAtEnemy(enemy));
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
             this.setTarget().healthPoints -= this.player.damagePoints;
             this.player.alreadyTakenLifeFromOpponent = true;
@@ -165,17 +165,21 @@ class Game {
 
     setTarget() {
         const calledEnemies = this.enemy.filter(enemy => enemy.state.called && !enemy.state.dead);
+        const calledRight = calledEnemies.filter(enemy => enemy.position.right);
+        const calledLeft = calledEnemies.filter(enemy => enemy.position.left);
         if (calledEnemies.length > 0) {
-            if (this.player.lastMovement === 'right') {
-                const calledRight = calledEnemies.filter(enemy => enemy.position.right);
-                const calledLeft = calledEnemies.filter(enemy => enemy.position.left);
+            if (this.player.lastMovement.right) {
                 if (calledRight.length > 0) {
                     return this.closestEnemy(calledRight);
-                }   else {
-                    return this.closestEnemy(calledLeft);
-                }
+                }   
+            } else {
+                return this.closestEnemy(calledLeft);
             }
         }
+    }
+
+    lookingAtEnemy(enemy) {
+        return this.player.lastMovement.right && enemy.position.right || this.player.lastMovement.left && enemy.position.left;
     }
 
     closestEnemy(enemies) {
