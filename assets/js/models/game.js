@@ -9,7 +9,7 @@ class Game {
         this.fps = 1000 / 60
 
         this.background = new Background(this.ctx);
-        this.player = new Player(this.ctx, 25, 410, 22, 10, 12);
+        this.player = new Player(this.ctx, 25, 422, 15, 10, 12);
         this.enemy = [
             new Bat(this.ctx, 600, 390),
             new Wolf(this.ctx, 1000, 422)
@@ -146,8 +146,9 @@ class Game {
     
 
     attack() {
-        const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.state.nextToCharacter && this.lookingAtEnemy(enemy));
-        if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
+        const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.state.nextToCharacter);
+        const enemiesFighting = closeEnemies.filter(enemy => this.lookingAtEnemy(enemy))
+        if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && enemiesFighting.length > 0) {
             this.setTarget().healthPoints -= this.player.damagePoints;
             this.player.alreadyTakenLifeFromOpponent = true;
         };

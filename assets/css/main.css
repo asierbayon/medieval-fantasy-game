@@ -1,11 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+
 html, body {
     margin: 0;
     padding: 0;
-    background: #272b30;
+    background: rgba(111, 101, 77, 1);
 }
 
 body * {
     box-sizing: border-box;
+    font-family: 'MedievalSharp', cursive;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
 }
 
 .game-container {
@@ -13,7 +24,77 @@ body * {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100%;
-    background-color: white;
-    
+    background-image: rgba(111, 101, 77, 1);
+    width: 100%;
+}
+
+#start-screen {
+    background: black url('../img/medieval-fortress.jpg');
+    background-size: cover;
+    border: 2px solid black;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 705px;
+    height: 510px;
+}
+
+#how-to {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#instructions {
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.instruction {
+    background: rgba(111, 101, 77, 1);
+    border: 2px solid black;
+    padding: 0 20px 20px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#move-key {
+    height: 45px;
+}
+
+#attack-key {
+    height: 22px;
+}
+
+#start-screen button {
+    cursor: pointer;
+    box-shadow: inset 0 0 1px rgba(255,255,255,0.21);
+    height: 40px;
+    min-width: 105px;
+    background: #790C25;
+    border-width: 0;
+    border-radius: 3px;
+    color: white;
+    font-size: 20px;
+    text-shadow: 0 1px 0px #982b44;
+}
+
+#start-screen button:active {
+    outline: none;
+    border: 2px solid black;
+}
+
+canvas {
+    border: black solid 3px;
+}
+
+#credits a {
+    color: #790C25;
 }

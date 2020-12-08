@@ -8,8 +8,29 @@
 </head>
 <body>
     <div class="game-container">
+        <div id="start-screen">
+            <h1>MEDIEVAL FANTASY GAME</h1>
+            <div id="how-to">
+                <h2>HOW TO PLAY</h2>
+                <div id="instructions">
+                    <div class="instruction">
+                        <h3>MOVE</h3>
+                        <img id="move-key" src="assets/img/asdw.png" alt="asdw keys"/>
+                    </div>
+                    <div class="instruction">
+                        <h3>ATTACK</h3>
+                        <img id="attack-key" src="assets/img/space.png" alt="space key"/>
+                    </div>
+                </div>
+            </div>
+            <button id="start-button">PLAY</button>
+        </div>
         <canvas id="canvas-game"></canvas>
     </div>
+    <div id="credits">
+        <p>Developed by <a href="https://github.com/asierbayon">Asier Bayón</a></p>
+    </div>
+
 
     <script src="assets/js/constants.js"></script>
     <script src="assets/js/models/background.js"></script>

@@ -66,10 +66,7 @@ class Character {
           );
         }
         this.sprite.drawCount++;
-        this.animate();
-
-        this.ctx.strokeRect(this.x, this.y, this.sprite.frameWidth, this.sprite.frameHeight)
-        
+        this.animate();        
     }  
 
     animateSprite(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {

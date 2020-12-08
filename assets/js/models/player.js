@@ -97,33 +97,41 @@ class Player extends Character {
     }
 
     animate() {
-      if (this.state.attacking) {
-        this.oneTimeAnimation(6, 9, 12, 10);
-      }   else if (this.state.jumping && this.lastMovement.right) {
-              this.animateSprite(4, 4, 11, 18);
-        } else if (this.state.jumping && this.lastMovement.left) {
-              this.animateSprite(5, 4, 11, 18);
+        if (this.state.attacking) {
+            if (this.lastMovement.right) {
+                this.oneTimeAnimation(0, 0, 7, 5);
+            } else {
+                this.oneTimeAnimation(1, 0, 7, 5);
+            }
+        } else if (this.state.jumping) {
+            if (this.lastMovement.right) {
+                this.animateSprite(4, 4, 8, 10);
+            } else {
+                this.animateSprite(5, 4, 8, 10);
+            }
         } else if (this.movement.right) {
-              this.animateSprite(2, 0, 7, 10);
+              this.animateSprite(8, 0, 7, 5);
         } else if (this.movement.left) {
-              this.animateSprite(3, 0, 7, 10);
+              this.animateSprite(9, 0, 7, 5);
         } else if (this.lastMovement.left) {
-              this.animateSprite(1, 0, 14, 5);
+              this.animateSprite(3, 0, 14, 5);
         } else {
-              this.animateSprite(0, 0, 14, 5);
+              this.animateSprite(2, 0, 14, 5);
         }
     }
 
 
     onPlatformChecker(element) {
-      if (this.x < element.x + element.width &&
-        this.x + this.width > element.x &&
+        const characterRealX = this.x + this.width / 3;
+        const characterRealXPlusWidth = this.x + this.width * 2/3;
+      if (characterRealX < element.x + element.width &&
+        characterRealXPlusWidth > element.x &&
         this.y + this.height < element.y) {
           this.platform = element
           this.state.onAPlatform = true;
           this.platformFloor = element.y;
         } 
-      if (this.state.onAPlatform && (this.x > this.platform.x + this.platform.width || this.x + this.width < this.platform.x)) {
+      if (this.state.onAPlatform && (characterRealX > this.platform.x + this.platform.width || characterRealXPlusWidth < this.platform.x)) {
           this.state.onAPlatform = false;
           this.state.offAPlatform = true;
         }
