@@ -12,11 +12,9 @@ class Player extends Character {
             left: false
         };
 
-        this.state = {
-          jumping: false,
-          onAPlatform: false,
-          offAPlatform: false
-        };
+        this.state.jumping = false;
+        this.state.onAPlatform = false;
+        this.state.offAPlatform = false;
 
         this.lastMovement = 'right';
 
@@ -28,6 +26,7 @@ class Player extends Character {
         };
 
         this.healthPoints = CHARACTER_HEALTH;
+        this.damagePoints = CHARACTER_DAMAGE;
 
     }
 

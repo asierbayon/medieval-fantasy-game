@@ -5,7 +5,7 @@ class Wolf extends Enemy {
         this.sprite.horizontalFrames = 18;
         this.sprite.verticalFrames = 7;
         this.healthPoints = WOLF_HEALTH;
-        this.attackPoints = WOLF_ATTACK;
+        this.damagePoints = WOLF_DAMAGE;
         this.speed = WOLF_SPEED;
     }
 

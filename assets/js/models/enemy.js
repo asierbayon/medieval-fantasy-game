@@ -1,11 +1,10 @@
 class Enemy extends Character {
 
     constructor(ctx, x, y, sprite) {
-        super(ctx, x, y, sprite)
-        this.state = {
-            nextToCharacter: false,
-            called: false
-        }
+        super(ctx, x, y, sprite);
+
+        this.state.nextToCharacter = false;
+        this.state.called = false;
 
         this.position = {
             left: false,

@@ -75,6 +75,7 @@ class Game {
     }
 
     checkHealth() {
+        this.player.isDead();
         const lostHealth = CHARACTER_HEALTH - this.player.healthPoints;
         if (lostHealth <= 4) {
             this.health[2].sprite.horizontalFrameIndex = lostHealth;
@@ -91,7 +92,7 @@ class Game {
     collisionChecker() {
         this.platform.forEach(platform => this.player.onPlatformChecker(platform));
         this.enemy.forEach(enemy => this.callEnemy(enemy));
-        this.enemy.forEach(enemy => this.nextToCharacter(enemy));
+        this.enemy.forEach(enemy => this.nextToCharacter());
     }
 
     callEnemy(enemy) {
@@ -100,16 +101,9 @@ class Game {
         }
     }
 
-    nextToCharacter(enemy) {
+    nextToCharacter() {
         this.sideOfPlayerIsEnemyOn();
         this.inlineChecker();
-        /* if (enemy.x > this.player.x && enemy.x < this.player.x + this.player.width / 2) {
-            enemy.state.nextToCharacter = true;
-        } else if (this.player.x < enemy.x + enemy.width / 2 && enemy.x < this.player.x) {
-            enemy.state.nextToCharacter = true;
-        } else {
-            enemy.state.nextToCharacter = false;
-        } */
     }
 
     inlineChecker() {
@@ -121,7 +115,7 @@ class Game {
                 enemy.inline.horizontally = false;
             }
 
-            if ((enemy.x >= this.player.x && enemy.x <= this.player.x + this.player.width / 2) || (enemy.x + enemy.width >= this.player.x && enemy.x <= this.player.x / 2)) {
+            if ((enemy.x >= this.player.x && enemy.x <= this.player.x + this.player.width / 2) || (enemy.x + enemy.width >= this.player.x + this.player.width / 2 && enemy.x <= this.player.x + this.player.width / 2)) {
                 enemy.inline.vertically = true;
             } else {
                 enemy.inline.vertically = false;
@@ -142,25 +136,47 @@ class Game {
         });
     }
 
+    
+
     attack() {
-        const closeEnemies = this.enemy.filter(enemy => enemy.inline.vertically && enemy.inline.horizontally);
-        console.log(closeEnemies)
+        const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.inline.vertically && enemy.inline.horizontally);
+        console.log()
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && closeEnemies.length > 0) {
-            closeEnemies.forEach(enemy => {
-                if (!enemy.state.dead) {
-                    enemy.healthPoints--;
-                }
-            });
+            console.log(this.setTarget())
+            this.setTarget().healthPoints -= this.player.damagePoints;
             this.player.alreadyTakenLifeFromOpponent = true;
         };
 
         closeEnemies.forEach(enemy => {
-            if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent) {
-                this.player.healthPoints--;
+            
+            if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent && !enemy.state.dead && !this.player.state.dead) {
+                this.player.healthPoints -= enemy.damagePoints;
                 enemy.alreadyTakenLifeFromOpponent = true;
             } else if (enemy.sprite.horizontalFrameIndex === enemy.sprite.initialHorizontalIndex) {
                 enemy.alreadyTakenLifeFromOpponent = false;
             }
+        });
+
+    }
+
+    setTarget() {
+        const calledEnemies = this.enemy.filter(enemy => enemy.state.called && !enemy.state.dead);
+        if (calledEnemies.length > 0) {
+            if (this.player.lastMovement === 'right') {
+                const calledRight = calledEnemies.filter(enemy => enemy.position.right);
+                const calledLeft = calledEnemies.filter(enemy => enemy.position.left);
+                if (calledRight.length > 0) {
+                    return this.closestEnemy(calledRight);
+                }   else {
+                    return this.closestEnemy(calledLeft);
+                }
+            }
+        }
+    }
+
+    closestEnemy(enemies) {
+        return enemies.reduce((a, b) => {
+            return Math.abs(b.x - this.player.x + this.player.width / 2) < Math.abs(a.x - this.player.x + this.player.width/2) ? b : a;
         })
     }
 }
