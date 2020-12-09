@@ -37,6 +37,18 @@ class Character {
           dead: false
         }
 
+        
+        this.state.onAPlatform = false;
+        this.state.offAPlatform = false;
+        this.platform = {
+          x: undefined,
+          y: undefined,
+          width: undefined
+        };
+        this.platformFloor = 0;
+        this.ground = this.y;
+
+
         this.deadAnimated = false;
 
         this.alreadyTakenLifeFromOpponent = false;
@@ -88,19 +100,19 @@ class Character {
     }
 
     oneTimeAnimation(initialVerticalIndex, initialHorizontalIndex, maxHorizontalIndex, frequency) {
-          if (this.sprite.verticalFrameIndex !== initialVerticalIndex) {
-            this.sprite.verticalFrameIndex = initialVerticalIndex;
-            this.sprite.horizontalFrameIndex = initialHorizontalIndex;
-          } else if (this.sprite.drawCount % frequency === 0) {
-              if (this.sprite.horizontalFrameIndex < maxHorizontalIndex) {
-                this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1);
-                this.sprite.drawCount = 0;
-              } else if (this.state.attacking) {
-                this.state.attacking = false;
-              } else {
-                this.deadAnimated = true;
-              }
-          }   
+      if (this.sprite.verticalFrameIndex !== initialVerticalIndex) {
+        this.sprite.verticalFrameIndex = initialVerticalIndex;
+        this.sprite.horizontalFrameIndex = initialHorizontalIndex;
+      } else if (this.sprite.drawCount % frequency === 0) {
+        if (this.sprite.horizontalFrameIndex < maxHorizontalIndex) {
+          this.sprite.horizontalFrameIndex = (this.sprite.horizontalFrameIndex + 1);
+          this.sprite.drawCount = 0;
+        } else if (this.state.attacking) {
+          this.state.attacking = false;
+        } else {
+          this.deadAnimated = true;
+        }
+      }   
     }
 
     isDead() {
@@ -108,5 +120,22 @@ class Character {
           this.state.dead = true;
       }
     }
+
+    onPlatformChecker(element) {
+      const characterRealX = this.x + this.width / 3;
+      const characterRealXPlusWidth = this.x + this.width * 2/3;
+        if (characterRealX < element.x + element.width &&
+        characterRealXPlusWidth > element.x &&
+        this.y + this.height < element.y) {
+        this.platform = element
+        this.state.onAPlatform = true;
+        this.platformFloor = element.y;
+      } 
+      if (this.state.onAPlatform && (characterRealX > this.platform.x + this.platform.width || characterRealXPlusWidth < this.platform.x)) {
+        this.state.onAPlatform = false;
+        this.state.offAPlatform = true;
+        this.platform = undefined;
+      }
+  }
 
 }

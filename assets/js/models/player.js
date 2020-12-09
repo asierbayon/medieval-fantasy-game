@@ -4,7 +4,7 @@ class Player extends Character {
         super(ctx, x, y, 'knight', horizontalFrames, verticalFrames);
 
 
-        this.ground = this.y;
+        
         this.maxX = this.ctx.canvas.width / 2;
         this.movement = {
             up: false,
@@ -13,19 +13,10 @@ class Player extends Character {
         };
 
         this.state.jumping = false;
-        this.state.onAPlatform = false;
-        this.state.offAPlatform = false;
 
         this.lastMovement = {
             right: true,
             left: false
-        };
-
-        this.platformFloor = 0;
-        this.platform = {
-          x: undefined,
-          y: undefined,
-          width: undefined
         };
 
         this.healthPoints = CHARACTER_HEALTH;
@@ -121,19 +112,5 @@ class Player extends Character {
     }
 
 
-    onPlatformChecker(element) {
-        const characterRealX = this.x + this.width / 3;
-        const characterRealXPlusWidth = this.x + this.width * 2/3;
-      if (characterRealX < element.x + element.width &&
-        characterRealXPlusWidth > element.x &&
-        this.y + this.height < element.y) {
-          this.platform = element
-          this.state.onAPlatform = true;
-          this.platformFloor = element.y;
-        } 
-      if (this.state.onAPlatform && (characterRealX > this.platform.x + this.platform.width || characterRealXPlusWidth < this.platform.x)) {
-          this.state.onAPlatform = false;
-          this.state.offAPlatform = true;
-        }
-  }
+    
 }

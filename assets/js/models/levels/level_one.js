@@ -22,6 +22,8 @@ class LevelOne extends Level {
         this.player = new Player(this.ctx, 25, 422, 15, 10, 12);
 
         this.enemy = [
+            new Bat(this.ctx, 310, 310),
+            // new Wolf(this.ctx, 320, 340),
             new Bat(this.ctx, 420, 392),
             new Golem(this.ctx, 700, 410),
             new Wolf(this.ctx, 1000, 422),

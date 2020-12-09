@@ -66,12 +66,26 @@ class Level {
         this.enemy.forEach(enemy => this.callEnemy(enemy));
         this.inlineChecker();
         this.sideOfPlayerIsEnemyOn();
+        this.onTheSamePlatform();
     };
 
     collisionChecker() {
-        this.platform.forEach(platform => this.player.onPlatformChecker(platform));
+        this.platform.forEach(platform => {
+            this.player.onPlatformChecker(platform);
+            this.enemy.forEach(enemy => enemy.onPlatformChecker(platform)); //cuidado
+            });
         this.enemy.forEach(enemy => this.nextToCharacter());
     };
+
+    onTheSamePlatform() {
+        this.enemy.filter(enemy => enemy.state.onAPlatform).forEach(enemy => {
+            if (this.player.platform === enemy.platform) {
+                enemy.playerOnMyPlatform = true;
+            } else {
+                enemy.playerOnMyPlatform = false;
+            }
+        });
+    }
 
     callEnemy(enemy) {
         if (this.player.x > enemy.x - ACTION_RADIUS && this.player.x < enemy.x + ACTION_RADIUS && enemy.inline.horizontally) {
@@ -80,7 +94,6 @@ class Level {
     };
 
     nextToCharacter() {
-        console.log(this.obstacles[0].state.nextToCharacter);
         this.enemy.forEach(enemy => {
             if (enemy.inline.vertically && enemy.inline.horizontally) {
             enemy.state.nextToCharacter = true;

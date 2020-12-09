@@ -3,7 +3,7 @@ class Fireplace extends Obstacle {
     constructor(ctx, x, y, sprite) {
         super(ctx, x, y, sprite, 1, 6);
 
-        this.damagePoints = 1;
+        this.damagePoints = FIREPLACE_DAMAGE;
 
         this.alreadyTakenLifeFromOpponent = false;
     }

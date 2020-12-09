@@ -6,7 +6,7 @@ const SPACE = 32;
 
 const GRAVITY = 0.4; 
 
-const SPEED = 3;
+
 const BACKGROUND_SPEED = -3;
 
 const BAT_HEALTH = 1;
@@ -23,5 +23,8 @@ const GOLEM_DAMAGE = 1;
 
 const CHARACTER_HEALTH = 12;
 const CHARACTER_DAMAGE = 1;
+const SPEED = 3;
+
+const FIREPLACE_DAMAGE = 1;
 
 const ACTION_RADIUS = 200;
