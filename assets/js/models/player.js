@@ -26,69 +26,84 @@ class Player extends Character {
 
     onKeyEvent(event) {
         const state = event.type === 'keydown';
-        switch (event.keyCode) {
-            case KEY_RIGHT:
-                this.movement.right = state;
-                this.lastMovement.right = true;
-                this.lastMovement.left = false;
-                break;
-            case KEY_LEFT:
-                this.movement.left = state;
-                this.lastMovement.right = false;
-                this.lastMovement.left = true;
-                break;
-            case KEY_UP:
-                this.movement.up = state;
-                break;
-            case !this.state.attacking && SPACE:
-                this.state.attacking = true;
-                this.alreadyTakenLifeFromOpponent = false;
-                break;
+        if (!this.deadAnimated) {
+            switch (event.keyCode) {
+                case KEY_RIGHT:
+                    this.movement.right = state;
+                    this.lastMovement.right = true;
+                    this.lastMovement.left = false;
+                    break;
+                case KEY_LEFT:
+                    this.movement.left = state;
+                    this.lastMovement.right = false;
+                    this.lastMovement.left = true;
+                    break;
+                case KEY_UP:
+                    this.movement.up = state;
+                    break;
+                case !this.state.attacking && SPACE:
+                    this.state.attacking = true;
+                    this.alreadyTakenLifeFromOpponent = false;
+                    break;
+            }
         }
     }
 
 
     move() { 
-        
-        if (this.state.onAPlatform) {
-            this.maxY = this.platformFloor - this.height;
-        } else if (this.state.offAPlatform && this.y !== this.ground) {
-            this.maxY = this.ground;
-            this.vy += GRAVITY;
-        }
-
-        if (this.movement.up && !this.state.jumping) {
-            this.state.jumping = true;
-            this.vy = -8;
-        }   else if (this.state.jumping) {
-            this.vy += GRAVITY;
-        }
-
-        if (this.movement.right) {
-            this.vx = SPEED;
-        } else if (this.movement.left) {
-            this.vx = -SPEED;
-        } else {
-            this.vx = 0;
-        }
-        
-        this.x += this.vx;
-        this.y += this.vy;
+        console.log(this.deadAnimated)
+        if(!this.state.dead) {
+            if (this.state.onAPlatform) {
+                this.maxY = this.platformFloor - this.height;
+            } else if (this.state.offAPlatform && this.y !== this.ground) {
+                this.maxY = this.ground;
+                this.vy += GRAVITY;
+            }
     
-        if (this.x >= this.maxX) {
-            this.x = this.maxX;
-        } else if (this.x <= this.minX) {
-            this.x = this.minX;
-        }
-        if (this.y >= this.maxY) {
-            this.y = this.maxY;
-            this.state.jumping = false;
-            this.state.offAPlatform = false;
+            if (this.movement.up && !this.state.jumping) {
+                this.state.jumping = true;
+                this.vy = -8;
+            }   else if (this.state.jumping) {
+                this.vy += GRAVITY;
+            }
+    
+            if (this.movement.right) {
+                this.vx = SPEED;
+            } else if (this.movement.left) {
+                this.vx = -SPEED;
+            } else {
+                this.vx = 0;
+            }
+            
+            this.x += this.vx;
+            this.y += this.vy;
+        
+            if (this.x >= this.maxX) {
+                this.x = this.maxX;
+            } else if (this.x <= this.minX) {
+                this.x = this.minX;
+            }
+            if (this.y >= this.maxY) {
+                this.y = this.maxY;
+                this.state.jumping = false;
+                this.state.offAPlatform = false;
+            }
         }
     }
 
     animate() {
-        if (this.state.attacking) {
+        if (this.state.dead) {
+            if (!this.deadAnimated && this.lastMovement.right) {
+                this.oneTimeAnimation(6, 0, 14, 5);
+            } else if (this.lastMovement.right) {
+                this.oneTimeAnimation(6, 14, 14, 0);
+            } else if (!this.deadAnimated) {
+                this.oneTimeAnimation(7, 0, 14, 5);
+            } else {
+                this.oneTimeAnimation(7, 14, 14, 0);
+            }
+        }
+        else if (this.state.attacking) {
             if (this.lastMovement.right) {
                 this.oneTimeAnimation(0, 0, 7, 5);
             } else {

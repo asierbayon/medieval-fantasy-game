@@ -17,9 +17,16 @@ class Level {
                 this.collisionChecker();
                 this.attack();
                 this.checkHealth();
+                this.nextLevel();
             }, this.fps);
         }
     };
+
+    nextLevel() {
+        if (this.enemy[this.enemy.length -1].healthPoints <= 0) {
+            console.log('Holiii');
+        }
+    }
 
     onKeyEvent(event) {
         this.background.onKeyEvent(event);
@@ -64,8 +71,8 @@ class Level {
 
     positionChecker() {
         this.enemy.forEach(enemy => this.callEnemy(enemy));
-        this.inlineChecker();
-        this.sideOfPlayerIsEnemyOn();
+        this.enemy.forEach(enemy => this.inlineChecker(enemy));
+        this.enemy.forEach(enemy => this.sideOfPlayerIsEnemyOn(enemy));
         this.onTheSamePlatform();
     };
 
@@ -74,7 +81,8 @@ class Level {
             this.player.onPlatformChecker(platform);
             this.enemy.forEach(enemy => enemy.onPlatformChecker(platform));
             });
-        this.enemy.forEach(enemy => this.nextToCharacter());
+        this.enemy.forEach(enemy => this.nextToCharacter(enemy));
+        this.obstacles.forEach(obstacle => this.nextToCharacter(obstacle))
     };
 
     onTheSamePlatform() {
@@ -93,58 +101,29 @@ class Level {
         }
     };
 
-    nextToCharacter() {
-        this.enemy.forEach(enemy => {
-            if (enemy.inline.vertically && enemy.inline.horizontally) {
-            enemy.state.nextToCharacter = true;
+    nextToCharacter(element) {
+            if (element.inline.vertically && element.inline.horizontally) {
+                element.state.nextToCharacter = true;
             } else {
-            enemy.state.nextToCharacter = false;
+                element.state.nextToCharacter = false;
             }
-        });
-
-        this.obstacles.forEach(obstacle => {
-            if (obstacle.inline.vertically && obstacle.inline.horizontally) {
-            obstacle.state.nextToCharacter = true;
-            } else {
-            obstacle.state.nextToCharacter = false;
-            }
-        })
     };
 
-    inlineChecker() {
-        const enemiesOnScreen = this.enemy.filter(enemy => enemy.x <= this.canvas.width && enemy.x + enemy.width >= 0);
-        enemiesOnScreen.forEach(enemy => {
-            if (enemy.y + enemy.height / 2 >= this.player.y && enemy.y + enemy.height / 2 <= this.player.y + this.player.height) {
-                enemy.inline.horizontally = true;
+    inlineChecker(element) {
+            if (element.y + element.height / 2 >= this.player.y && element.y + element.height / 2 <= this.player.y + this.player.height) {
+                element.inline.horizontally = true;
             } else {
-                enemy.inline.horizontally = false;
+                element.inline.horizontally = false;
             }
 
-            if ((enemy.x >= this.player.x && enemy.x <= this.player.x + this.player.width / 2) || (enemy.x + enemy.width >= this.player.x + this.player.width / 2 && enemy.x <= this.player.x + this.player.width / 2)) {
-                enemy.inline.vertically = true;
+            if ((element.x >= this.player.x && element.x <= this.player.x + this.player.width / 2) || (element.x + element.width >= this.player.x + this.player.width / 2 && element.x <= this.player.x + this.player.width / 2)) {
+                element.inline.vertically = true;
             } else {
-                enemy.inline.vertically = false;
+                element.inline.vertically = false;
             }
-        })
-
-        const obstaclesOnScreen = this.obstacles.filter(obstacle => obstacle.x <= this.canvas.width && obstacle.x + obstacle.width >= 0);
-        obstaclesOnScreen.forEach(obstacle => {
-            if (obstacle.y + obstacle.height / 2 >= this.player.y && obstacle.y + obstacle.height / 2 <= this.player.y + this.player.height) {
-                obstacle.inline.horizontally = true;
-            } else {
-                obstacle.inline.horizontally = false;
-            }
-
-            if ((obstacle.x >= this.player.x && obstacle.x <= this.player.x + this.player.width / 2) || (obstacle.x + obstacle.width >= this.player.x + this.player.width / 2 && obstacle.x <= this.player.x + this.player.width / 2)) {
-                obstacle.inline.vertically = true;
-            } else {
-                obstacle.inline.vertically = false;
-            }
-        })
     };
 
-    sideOfPlayerIsEnemyOn() {
-        this.enemy.forEach(enemy => {
+    sideOfPlayerIsEnemyOn(enemy) {
             if (enemy.x > this.player.x) {
               enemy.position.left = false;
               enemy.position.right = true;
@@ -152,7 +131,6 @@ class Level {
               enemy.position.left = true;
               enemy.position.right = false;
           }
-        });
     };
 
     
@@ -182,7 +160,7 @@ class Level {
             } else if (fireplace.sprite.horizontalFrameIndex === fireplace.sprite.initialHorizontalIndex) {
                 fireplace.alreadyTakenLifeFromOpponent = false;
             }
-        })
+        });
     };
 
     setTarget() {
@@ -209,4 +187,5 @@ class Level {
             return Math.abs(b.x - this.player.x + this.player.width / 2) < Math.abs(a.x - this.player.x + this.player.width/2) ? b : a;
         })
     };
+
 }

@@ -22,8 +22,7 @@ class Enemy extends Character {
     }
 
 
-    move(player) {
-
+    move (player) {
         if (!this.state.onAPlatform || this.playerOnMyPlatform) {
             if (this.state.dead && player.x >= player.maxX && player.movement.right) {
                 this.vx = BACKGROUND_SPEED;
