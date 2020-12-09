@@ -6,26 +6,27 @@ class Level {
         this.canvas = canvas;
         
         this.fps = fps;
+
+        this.nextLevelAvailable = false;
+        
     }
 
     start() {
-        if (!this.drawIntervalId) {
             this.drawIntervalId = setInterval(() => {
-                this.move();
-                this.draw();
-                this.positionChecker();
-                this.collisionChecker();
-                this.attack();
-                this.checkHealth();
-                this.nextLevel();
+                if (!this.nextLevelAvailable) {
+                    this.move();
+                    this.draw();
+                    this.positionChecker();
+                    this.collisionChecker();
+                    this.attack();
+                    this.checkHealth();
+                    this.nextLevel();
+                }
             }, this.fps);
-        }
     };
 
     nextLevel() {
-        if (this.enemy[this.enemy.length -1].healthPoints <= 0) {
-            console.log('Holiii');
-        }
+        if (this.enemy[this.enemy.length - 1].deadAnimated) this.nextLevelAvailable = true;
     }
 
     onKeyEvent(event) {
@@ -62,10 +63,14 @@ class Level {
         } else if (lostHealth > 4 && lostHealth <= 8) {
             this.health[1].sprite.horizontalFrameIndex = lostHealth - 4;
             this.health[2].sprite.horizontalFrameIndex = 4;        
-        } else {
+        } else if (lostHealth < 4 && lostHealth > 0) {
             this.health[0].sprite.horizontalFrameIndex = lostHealth - 8;  
             this.health[1].sprite.horizontalFrameIndex = 4;
             this.health[2].sprite.horizontalFrameIndex = 4;  
+        } else {
+            this.health[0].sprite.horizontalFrameIndex = 4;  
+            this.health[1].sprite.horizontalFrameIndex = 4;
+            this.health[2].sprite.horizontalFrameIndex = 4; 
         }
     };
 
@@ -144,23 +149,25 @@ class Level {
             this.player.alreadyTakenLifeFromOpponent = true;
         };
 
-        closeEnemies.forEach(enemy => {
-            if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent && !enemy.state.dead && !this.player.state.dead) {
-                this.player.healthPoints -= enemy.damagePoints;
-                enemy.alreadyTakenLifeFromOpponent = true;
-            } else if (enemy.sprite.horizontalFrameIndex === enemy.sprite.initialHorizontalIndex) {
-                enemy.alreadyTakenLifeFromOpponent = false;
-            }
-        });
-
-        closeFireplaces.forEach(fireplace => {
-            if (fireplace.sprite.horizontalFrameIndex === fireplace.sprite.initialHorizontalIndex + 1 && !fireplace.alreadyTakenLifeFromOpponent && !this.player.state.dead) {
-                this.player.healthPoints -= fireplace.damagePoints;
-                fireplace.alreadyTakenLifeFromOpponent = true;
-            } else if (fireplace.sprite.horizontalFrameIndex === fireplace.sprite.initialHorizontalIndex) {
-                fireplace.alreadyTakenLifeFromOpponent = false;
-            }
-        });
+        if (!this.boss.state.dead) {
+            closeEnemies.forEach(enemy => {
+                if (enemy.sprite.horizontalFrameIndex === enemy.sprite.maxHorizontalIndex && !enemy.alreadyTakenLifeFromOpponent && !enemy.state.dead && !this.player.state.dead) {
+                    this.player.healthPoints -= enemy.damagePoints;
+                    enemy.alreadyTakenLifeFromOpponent = true;
+                } else if (enemy.sprite.horizontalFrameIndex === enemy.sprite.initialHorizontalIndex) {
+                    enemy.alreadyTakenLifeFromOpponent = false;
+                }
+            });
+    
+            closeFireplaces.forEach(fireplace => {
+                if (fireplace.sprite.horizontalFrameIndex === fireplace.sprite.initialHorizontalIndex + 1 && !fireplace.alreadyTakenLifeFromOpponent && !this.player.state.dead) {
+                    this.player.healthPoints -= fireplace.damagePoints;
+                    fireplace.alreadyTakenLifeFromOpponent = true;
+                } else if (fireplace.sprite.horizontalFrameIndex === fireplace.sprite.initialHorizontalIndex) {
+                    fireplace.alreadyTakenLifeFromOpponent = false;
+                }
+            });
+        }
     };
 
     setTarget() {

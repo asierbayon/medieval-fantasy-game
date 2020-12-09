@@ -8,14 +8,18 @@ class Game {
         this.drawIntervalId = undefined;
         this.fps = 1000 / 60;
 
-        this.level = new LevelOne(this.ctx, this.canvas, this.fps);
+        this.level = [
+            new LevelOne(this.ctx, this.canvas, this.fps),
+            new LevelOne(this.ctx, this.canvas, this.fps)
+        ];
 
     }
     
     start() {
-        this.level.start();
+        this.level[0].start();
         this.clear();
         this.stop();
+        this.currentLevel();
     }
     
     clear() {
@@ -28,6 +32,22 @@ class Game {
     };
     
     onKeyEvent(event) {
-        this.level.onKeyEvent(event);
+        console.log(this.level)
+        this.currentLevel().onKeyEvent(event);
+        if (this.level[0].nextLevelAvailable) {
+            this.stop();
+            this.level.shift();
+            this.start();
+        }
+    }
+
+    currentLevel() {
+        for (let i=0; i < this.level.length; i++) {
+            if (this.level[i].nextLevelAvailable) {
+                return this.level[i+1];
+            } else {
+                return this.level[0];
+            }
+        }
     }
 }

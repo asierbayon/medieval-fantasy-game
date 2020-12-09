@@ -20,7 +20,7 @@ class Player extends Character {
         };
 
         this.healthPoints = CHARACTER_HEALTH;
-        this.damagePoints = CHARACTER_DAMAGE;
+        this.damagePoints = 50;
 
     }
 
@@ -50,8 +50,7 @@ class Player extends Character {
     }
 
 
-    move() { 
-        console.log(this.deadAnimated)
+    move() {
         if(!this.state.dead) {
             if (this.state.onAPlatform) {
                 this.maxY = this.platformFloor - this.height;

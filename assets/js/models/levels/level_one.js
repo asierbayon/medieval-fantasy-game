@@ -39,11 +39,16 @@ class LevelOne extends Level {
             new Boss(this.ctx, 350, 392)
         ];
 
+        this.boss = this.enemy[this.enemy.length -1];
+
         this.health = [
             new Health(this.ctx, 20, 20),
             new Health(this.ctx, 45, 20),
             new Health(this.ctx, 70, 20)
         ];
         this.health.forEach(heart => heart.sprite.horizontalFrameIndex = 0);
+
     }
+
+    
 }
