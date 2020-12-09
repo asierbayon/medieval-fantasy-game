@@ -17,6 +17,10 @@ const WOLF_HEALTH = 2;
 const WOLF_SPEED = 3;
 const WOLF_DAMAGE = 2;
 
+const GOLEM_HEALTH = 4;
+const GOLEM_SPEED = 1.5;
+const GOLEM_DAMAGE = 1;
+
 const CHARACTER_HEALTH = 12;
 const CHARACTER_DAMAGE = 1;
 

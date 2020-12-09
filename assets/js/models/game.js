@@ -11,7 +11,8 @@ class Game {
         this.background = new Background(this.ctx);
         this.player = new Player(this.ctx, 25, 422, 15, 10, 12);
         this.enemy = [
-            new Bat(this.ctx, 600, 390),
+            new Golem(this.ctx, 300, 410),
+            new Bat(this.ctx, 600, 392),
             new Wolf(this.ctx, 1000, 422)
         ];
         this.platform = [
