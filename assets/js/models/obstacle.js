@@ -27,6 +27,11 @@ class Obstacle {
             nextToCharacter: false
         }
 
+        this.inline = {
+            vertically: false,
+            horizontally: true
+        }
+
         this.movements = {
             right: false
         }

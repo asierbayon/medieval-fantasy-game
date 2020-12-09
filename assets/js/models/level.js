@@ -80,11 +80,20 @@ class Level {
     };
 
     nextToCharacter() {
+        console.log(this.obstacles[0].state.nextToCharacter);
         this.enemy.forEach(enemy => {
             if (enemy.inline.vertically && enemy.inline.horizontally) {
             enemy.state.nextToCharacter = true;
             } else {
             enemy.state.nextToCharacter = false;
+            }
+        });
+
+        this.obstacles.forEach(obstacle => {
+            if (obstacle.inline.vertically && obstacle.inline.horizontally) {
+            obstacle.state.nextToCharacter = true;
+            } else {
+            obstacle.state.nextToCharacter = false;
             }
         })
     };
@@ -103,7 +112,22 @@ class Level {
             } else {
                 enemy.inline.vertically = false;
             }
-        }) 
+        })
+
+        const obstaclesOnScreen = this.obstacles.filter(obstacle => obstacle.x <= this.canvas.width && obstacle.x + obstacle.width >= 0);
+        obstaclesOnScreen.forEach(obstacle => {
+            if (obstacle.y + obstacle.height / 2 >= this.player.y && obstacle.y + obstacle.height / 2 <= this.player.y + this.player.height) {
+                obstacle.inline.horizontally = true;
+            } else {
+                obstacle.inline.horizontally = false;
+            }
+
+            if ((obstacle.x >= this.player.x && obstacle.x <= this.player.x + this.player.width / 2) || (obstacle.x + obstacle.width >= this.player.x + this.player.width / 2 && obstacle.x <= this.player.x + this.player.width / 2)) {
+                obstacle.inline.vertically = true;
+            } else {
+                obstacle.inline.vertically = false;
+            }
+        })
     };
 
     sideOfPlayerIsEnemyOn() {
@@ -122,6 +146,7 @@ class Level {
 
     attack() {
         const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.state.nextToCharacter);
+        const closeFireplaces = this.obstacles.filter(fireplace => fireplace.state.nextToCharacter);
         const enemiesFighting = closeEnemies.filter(enemy => this.lookingAtEnemy(enemy))
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && enemiesFighting.length > 0) {
             this.setTarget().healthPoints -= this.player.damagePoints;
@@ -136,6 +161,15 @@ class Level {
                 enemy.alreadyTakenLifeFromOpponent = false;
             }
         });
+
+        closeFireplaces.forEach(fireplace => {
+            if (fireplace.sprite.horizontalFrameIndex === fireplace.sprite.initialHorizontalIndex + 1 && !fireplace.alreadyTakenLifeFromOpponent && !this.player.state.dead) {
+                this.player.healthPoints -= fireplace.damagePoints;
+                fireplace.alreadyTakenLifeFromOpponent = true;
+            } else if (fireplace.sprite.horizontalFrameIndex === fireplace.sprite.initialHorizontalIndex) {
+                fireplace.alreadyTakenLifeFromOpponent = false;
+            }
+        })
     };
 
     setTarget() {
