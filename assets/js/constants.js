@@ -28,3 +28,4 @@ const SPEED = 3;
 const FIREPLACE_DAMAGE = 1;
 
 const ACTION_RADIUS = 200;
+const MIN_PLATFORM_HEIGHT = 400;

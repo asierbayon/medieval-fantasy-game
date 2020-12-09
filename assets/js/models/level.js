@@ -72,7 +72,7 @@ class Level {
     collisionChecker() {
         this.platform.forEach(platform => {
             this.player.onPlatformChecker(platform);
-            this.enemy.forEach(enemy => enemy.onPlatformChecker(platform)); //cuidado
+            this.enemy.forEach(enemy => enemy.onPlatformChecker(platform));
             });
         this.enemy.forEach(enemy => this.nextToCharacter());
     };

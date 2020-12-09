@@ -68,14 +68,15 @@ class Enemy extends Character {
       }
 
     checkMovement() {
-          if (this.inline.vertically) this.state.moving = false;
-          else if (this.state.called) this.state.moving = true;
+        if (this.state.onAPlatform && !this.playerOnMyPlatform) this.state.moving = false;
+        else if (this.inline.vertically) this.state.moving = false;
+        else if (this.state.called) this.state.moving = true;
       }
 
     onPlatformChecker(element) {
         const characterRealX = this.x + this.width / 3;
         const characterRealXPlusWidth = this.x + this.width * 2/3; 
-        if (this.y < 330) { //make this better
+        if (this.y + this.height < MIN_PLATFORM_HEIGHT) {
             if (characterRealX < element.x + element.width &&
             characterRealXPlusWidth > element.x &&
             this.y < element.y) {
