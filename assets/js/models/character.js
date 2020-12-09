@@ -48,7 +48,7 @@ class Character {
 
     isMoving() {
       if (this.vx !==0) this.state.moving = true;
-      else this.state.moving = false;
+      else this.state.moving = false; 
     }
 
     draw() {

@@ -5,10 +5,10 @@ class Background {
         this.x = 0;
         this.footerX = 0;
         this.y = 0;
-        this.h = this.ctx.canvas.height;
-        this.w = this.ctx.canvas.width;
-        this.footerH = this.h * 0.1;
-        this.footerY = this.h - this.footerH;
+        this.height = this.ctx.canvas.height;
+        this.width = this.ctx.canvas.width;
+        this.footerH = this.height * 0.1;
+        this.footerY = this.height - this.footerH;
 
         this.vx = BACKGROUND_SPEED;
 
@@ -55,28 +55,28 @@ class Background {
 				this.bgImg,
 				this.x,
 				this.y,
-				this.w,
-				this.h
+				this.width,
+				this.height
             );
             this.ctx.drawImage(
 				this.bgImg,
-				this.x + this.w,
+				this.x + this.width,
 				this.y,
-				this.w,
-				this.h
+				this.width,
+				this.height
             );
             this.ctx.drawImage(
 				this.footerImg,
 				this.footerX,
 				this.footerY,
-				this.w,
+				this.width,
 				this.footerH
             );
             this.ctx.drawImage(
 				this.footerImg,
-				this.footerX + this.w,
+				this.footerX + this.width,
 				this.footerY,
-				this.w,
+				this.width,
 				this.footerH
             );
 	    }
@@ -86,7 +86,7 @@ class Background {
         if (this.movements.right) {
             this.x += this.vx;
             this.footerX += this.vx;
-            if (this.x + this.w <= 0) {
+            if (this.x + this.width <= 0) {
               this.x = 0;
               this.footerX = 0;
             }

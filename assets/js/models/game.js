@@ -9,6 +9,13 @@ class Game {
         this.fps = 1000 / 60
 
         this.background = new Background(this.ctx);
+
+        this.obstacles = [
+            new Fireplace(this.ctx, 100, 390, 'fireplace'),
+            new Fireplace(this.ctx, 140, 390, 'fireplace_alt'),
+            new Fireplace(this.ctx, 180, 390, 'torch')
+        ];
+
         this.player = new Player(this.ctx, 25, 422, 15, 10, 12);
         this.enemy = [
             new Golem(this.ctx, 300, 410),
@@ -26,6 +33,7 @@ class Game {
             new Health(this.ctx, 45, 20),
             new Health(this.ctx, 70, 20)
         ];
+
 
         this.health.forEach(heart => heart.sprite.horizontalFrameIndex = 0);
     }
@@ -47,6 +55,7 @@ class Game {
         this.background.onKeyEvent(event);
         this.player.onKeyEvent(event);
         this.platform.forEach(platform => platform.onKeyEvent(event));
+        this.obstacles.forEach(obstacle => obstacle.onKeyEvent(event));
     }
 
     stop() {
@@ -64,12 +73,14 @@ class Game {
         this.player.draw();
         this.enemy.forEach(enemy => enemy.draw());
         this.health.forEach(heart => heart.draw());
+        this.obstacles.forEach(obstacle => obstacle.draw());
     }
 
     move() {
         if (this.player.x >= this.player.maxX) {
             this.background.move();
             this.platform.forEach(platform => platform.move());
+            this.obstacles.forEach(obstacle => obstacle.move());
           }
         this.player.move();
         this.enemy.forEach(enemy => enemy.move(this.player));

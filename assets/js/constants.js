@@ -6,15 +6,15 @@ const SPACE = 32;
 
 const GRAVITY = 0.4; 
 
-const SPEED = 4;
-const BACKGROUND_SPEED = -2;
+const SPEED = 3;
+const BACKGROUND_SPEED = -3;
 
 const BAT_HEALTH = 1;
-const BAT_SPEED = 3.5;
+const BAT_SPEED = 2.9;
 const BAT_DAMAGE = 1;
 
 const WOLF_HEALTH = 2;
-const WOLF_SPEED = 3;
+const WOLF_SPEED = 2.5;
 const WOLF_DAMAGE = 2;
 
 const GOLEM_HEALTH = 4;

@@ -5,7 +5,7 @@ class Platform {
         this.x = x;
         this.y = y;
 
-        this.vx = -2;
+        this.vx = BACKGROUND_SPEED;
 
         this.widthProportion = widthProportion;
 
