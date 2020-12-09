@@ -15,13 +15,13 @@ class Golem extends Enemy {
         } else if (this.state.dead && this.deadAnimated) {
             this.animateSprite(7, 27, 27, 0)
         }   else if (this.state.nextToCharacter && this.position.left) {
-            this.animateSprite(4, 0, 16, 7);
+            this.animateSprite(4, 0, 15, 7);
         }  else if (this.state.nextToCharacter && this.position.right) {
-            this.animateSprite(5, 0, 16, 7);
+            this.animateSprite(5, 0, 15, 7);
         } else if (this.position.left && this.state.moving) {
-            this.animateSprite(2, 0, 6, 4);
+            this.animateSprite(2, 0, 6, 8);
         } else if (this.position.right && this.state.moving) {
-            this.animateSprite(3, 0, 6, 4);
+            this.animateSprite(3, 0, 6, 8);
         } else if (this.position.left) {
             this.animateSprite(0, 0, 11, 10);
         } else if (this.position.right) {
