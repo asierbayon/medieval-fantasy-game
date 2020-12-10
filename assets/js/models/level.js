@@ -38,7 +38,7 @@ class Level {
                 img.src = `assets/img/press_any_key.png`;
                 this.ctx.drawImage(
                     img,
-                    550,
+                    520,
                     20
                 );
             }
@@ -59,7 +59,7 @@ class Level {
                 img.src = `assets/img/press_any_key_dead.png`;
                 this.ctx.drawImage(
                     img,
-                    520,
+                    430,
                     20
                 );
         }

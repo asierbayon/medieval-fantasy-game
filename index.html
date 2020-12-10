@@ -8,19 +8,40 @@
 </head>
 <body>
     <div class="game-container">
+        <div id="enemies-deck-expanded">
+            <div class="close">
+                <img id="close-button" src="assets/img/close.png" alt="close-window">
+            </div>
+            <img class="enemy-card" src="assets/img/bat_card.png" alt="bat-information">
+            <img class="enemy-card" src="assets/img/wolf_card.png" alt="wolf-information">
+            <img class="enemy-card" src="assets/img/golem_card.png" alt="golem-information">
+            <img class="enemy-card" src="assets/img/boss_card.png" alt="boss-information">
+        </div>
         <div id="start-screen">
             <h1>MEDIEVAL FANTASY GAME</h1>
             <div id="how-to">
-                <h2>HOW TO PLAY</h2>
                 <div id="instructions">
+                    <h2>CONTROLS</h2>
                     <div class="instruction">
-                        <h3>MOVE</h3>
-                        <img id="move-key" src="assets/img/awd.png" alt="asdw keys"/>
+                        <h3>Move left</h3>
+                        <img class="key" src="assets/img/a_key.png" alt="asdw keys"/>
                     </div>
                     <div class="instruction">
-                        <h3>ATTACK</h3>
-                        <img id="attack-key" src="assets/img/space.png" alt="space key"/>
+                        <h3>Move right</h3>
+                        <img class="key" src="assets/img/d_key.png" alt="asdw keys"/>
                     </div>
+                    <div class="instruction">
+                        <h3>Move jump</h3>
+                        <img class="key" src="assets/img/w_key.png" alt="asdw keys"/>
+                    </div>
+                    <div class="instruction">
+                        <h3>Attack</h3>
+                        <img class="key" src="assets/img/space.png" alt="space key"/>
+                    </div>
+                </div>
+                <div id="cards">
+                    <img id="enemies-deck" src="assets/img/cards_deck.png" alt="enemies-information">
+                    <img id="player-card" src="assets/img/character_card.png" alt="character-information">
                 </div>
             </div>
             <button id="start-button">PLAY</button>

@@ -13,7 +13,11 @@ class LevelTwo extends Level {
 
         this.background = new Background(this.ctx, 'assets/img/lvl2_bg.png');
 
-        this.obstacles = [
+        this.potion = [
+            new Potion(this.ctx, 200, 427)
+        ]
+
+        this.fireplace = [
             new Fireplace(this.ctx, 350, 260, 'fireplace'),
             new Fireplace(this.ctx, 500, 390, 'fireplace_alt'),
             new Fireplace(this.ctx, 550, 390, 'fireplace_alt'),
