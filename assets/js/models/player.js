@@ -18,7 +18,7 @@ class Player extends Character {
         };
 
         this.healthPoints = CHARACTER_HEALTH;
-        this.damagePoints = 50;
+        this.damagePoints = CHARACTER_DAMAGE;
 
     }
 

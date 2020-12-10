@@ -103,3 +103,9 @@ Allows our player to heal. Pretty useful if don't wanna die.
 # Methods
 1. Animate
 
+
+
+## Credits 
+https://oco.itch.io/medieval-fantasy-character-pack
+https://ansimuz.itch.io/gothicvania-church-pack
+
