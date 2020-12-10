@@ -10,12 +10,17 @@ class Game {
 
         this.level = [
             new LevelOne(this.ctx, this.canvas, this.fps),
-            new LevelOne(this.ctx, this.canvas, this.fps)
+            new LevelTwo(this.ctx, this.canvas, this.fps),
+            new LevelThree(this.ctx, this.canvas, this.fps)
         ];
+
+        this.originalLevel = this.level[0];
 
     }
     
     start() {
+        this.originalLevel = this.level[0];
+        console.log(this.level)
         this.level[0].start();
         this.clear();
         this.stop();
@@ -32,13 +37,19 @@ class Game {
     };
     
     onKeyEvent(event) {
-        console.log(this.level)
-        this.currentLevel().onKeyEvent(event);
-        if (this.level[0].nextLevelAvailable) {
-            this.stop();
-            this.level.shift();
-            this.start();
-        }
+        
+        if (this.currentLevel()) {
+            this.currentLevel().onKeyEvent(event);
+            if (this.level[0].nextLevelAvailable) {
+                this.stop();
+                this.level.shift();
+                this.start();
+            } else if (this.level[0].restartLevel) {
+                this.level.unshift(this.originalLevel)
+                this.start();
+            }
+        };
+        
     }
 
     currentLevel() {

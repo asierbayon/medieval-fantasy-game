@@ -1,5 +1,5 @@
 class Background {
-    constructor(ctx) {
+    constructor(ctx, backgroundSource) {
         this.ctx = ctx;
 
         this.x = 0;
@@ -13,7 +13,7 @@ class Background {
         this.vx = BACKGROUND_SPEED;
 
         this.bgImg = new Image();
-        this.bgImg.src = 'assets/img/background_glacial_mountains.png';
+        this.bgImg.src = backgroundSource;
 
         this.footerImg = new Image();
         this.footerImg.src = 'assets/img/ground.PNG';

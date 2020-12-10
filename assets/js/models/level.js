@@ -8,6 +8,8 @@ class Level {
         this.fps = fps;
 
         this.nextLevelAvailable = false;
+
+        this.restartLevel = false;
         
     }
 
@@ -21,20 +23,52 @@ class Level {
                     this.attack();
                     this.checkHealth();
                     this.nextLevel();
+                    this.restart();
                 }
             }, this.fps);
     };
 
     nextLevel() {
-        if (this.enemy[this.enemy.length - 1].deadAnimated) this.nextLevelAvailable = true;
+        if (!this.isTheLastLevel) {
+            if (this.boss.state.dead && this.boss.sprite.horizontalFrameIndex > this.boss.sprite.maxHorizontalIndex) {
+                const img = new Image ();
+                img.src = `assets/img/press_any_key.png`;
+                this.ctx.drawImage(
+                    img,
+                    550,
+                    20
+                );
+            }
+        } else {
+            if (this.boss.state.dead && this.boss.sprite.horizontalFrameIndex > this.boss.sprite.maxHorizontalIndex) {
+                const img = new Image ();
+                img.src = `assets/img/game_completed.png`;
+                this.ctx.drawImage(
+                    img,
+                    0,
+                    0
+                );
+            }
+        }
+        
+
+        if (this.boss.deadAnimated && !this.isTheLastLevel) {
+            this.nextLevelAvailable = true;
+        }
     }
 
     onKeyEvent(event) {
-        this.background.onKeyEvent(event);
-        this.player.onKeyEvent(event);
-        this.platform.forEach(platform => platform.onKeyEvent(event));
-        this.obstacles.forEach(obstacle => obstacle.onKeyEvent(event));
+        if (!this.player.state.dead) {
+            this.background.onKeyEvent(event);
+            this.player.onKeyEvent(event);
+            this.platform.forEach(platform => platform.onKeyEvent(event));
+            this.obstacles.forEach(obstacle => obstacle.onKeyEvent(event));
+        }
     };
+
+    restart() {
+        if (this.player.deadAnimated) this.restartLevel = true;
+    }
 
     draw() {
         this.background.draw();
@@ -171,10 +205,10 @@ class Level {
     };
 
     setTarget() {
-        const calledEnemies = this.enemy.filter(enemy => enemy.state.called && !enemy.state.dead);
-        const calledRight = calledEnemies.filter(enemy => enemy.position.right);
-        const calledLeft = calledEnemies.filter(enemy => enemy.position.left);
-        if (calledEnemies.length > 0) {
+        const calledInlineEnemies = this.enemy.filter(enemy => enemy.state.called && !enemy.state.dead && enemy.inline.horizontally);
+        const calledRight = calledInlineEnemies.filter(enemy => enemy.position.right);
+        const calledLeft = calledInlineEnemies.filter(enemy => enemy.position.left);
+        if (calledInlineEnemies.length > 0) {
             if (this.player.lastMovement.right) {
                 if (calledRight.length > 0) {
                     return this.closestEnemy(calledRight);
@@ -194,5 +228,17 @@ class Level {
             return Math.abs(b.x - this.player.x + this.player.width / 2) < Math.abs(a.x - this.player.x + this.player.width/2) ? b : a;
         })
     };
+
+    continue() {
+        if (this.boss.state.dead) {
+            const img = new Image ();
+            img.src = `assets/img/press_any_key.png`;
+            this.ctx.drawImage(
+                img,
+                350,
+                350
+            );
+        }
+    }
 
 }

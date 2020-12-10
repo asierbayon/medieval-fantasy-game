@@ -19,7 +19,7 @@ class Character {
         this.sprite.verticalFrames = verticalFrames;
         this.sprite.verticalFrameIndex = 0;
         this.sprite.horizontalFrameIndex = 0;
-        this.sprite.maxHorizontalIndex = this.sprite.horizontalFrames;
+        this.sprite.maxHorizontalIndex = this.sprite.horizontalFrames - 1;
         this.sprite.initialVerticalIndex = 0;
         this.sprite.initialHorizontalIndex = 0;
         this.sprite.drawCount = 0;

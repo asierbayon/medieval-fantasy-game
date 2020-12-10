@@ -2,12 +2,15 @@ class LevelOne extends Level {
 
     constructor (ctx, canvas, fps) {
         super(ctx, canvas, fps);
+
+        this.isTheLastLevel = false;
+
         this.floor = {
             first: 385,
             second: 320
         };
 
-        this.background = new Background(this.ctx);
+        this.background = new Background(this.ctx, 'assets/img/lvl1_bg.png');
 
         this.obstacles = [
             new Fireplace(this.ctx, 350, 260, 'fireplace'),
@@ -36,7 +39,7 @@ class LevelOne extends Level {
             new Golem(this.ctx, 800, 337),
             new Wolf(this.ctx, 900, 422),
             new Bat(this.ctx, 1200, 392),
-            new Boss(this.ctx, 350, 392)
+            new Boss(this.ctx, 1400, 392)
         ];
 
         this.boss = this.enemy[this.enemy.length -1];
