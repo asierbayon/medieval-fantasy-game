@@ -23,15 +23,15 @@ class Background {
 
         this.bgImg.onload = () => {
             this.bgImg.isReady = true;
-        }
+        };
 
         this.footerImg.onload = () => {
             this.footerImg.isReady = true;
-        }
+        };
 
         this.movements = {
             right: false
-        }
+        };
 
 
     }
@@ -90,6 +90,6 @@ class Background {
               this.x = 0;
               this.footerX = 0;
             }
-          }
+          };
       }
 }

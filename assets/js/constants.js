@@ -21,11 +21,16 @@ const GOLEM_HEALTH = 4;
 const GOLEM_SPEED = 1.5;
 const GOLEM_DAMAGE = 1;
 
+const BOSS_HEALTH = 10;
+const BOSS_DAMAGE = 3;
+const BOSS_SPEED = 1;
+
 const CHARACTER_HEALTH = 12;
 const CHARACTER_DAMAGE = 1;
 const SPEED = 3;
 
 const FIREPLACE_DAMAGE = 1;
+const POTION_HEALPOINTS = 3;
 
 const ACTION_RADIUS = 200;
 const MIN_PLATFORM_HEIGHT = 390;

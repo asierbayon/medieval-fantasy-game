@@ -2,8 +2,6 @@ class Player extends Character {
 
     constructor(ctx, x, y, horizontalFrames, verticalFrames) {
         super(ctx, x, y, 'knight', horizontalFrames, verticalFrames);
-
-
         
         this.maxX = this.ctx.canvas.width / 2;
         this.movement = {
@@ -49,7 +47,6 @@ class Player extends Character {
         }
     }
 
-
     move() {
         if(!this.state.dead) {
             if (this.state.onAPlatform) {
@@ -82,6 +79,7 @@ class Player extends Character {
             } else if (this.x <= this.minX) {
                 this.x = this.minX;
             }
+
             if (this.y >= this.maxY) {
                 this.y = this.maxY;
                 this.state.jumping = false;
@@ -101,8 +99,7 @@ class Player extends Character {
             } else {
                 this.oneTimeAnimation(7, 14, 14, 0);
             }
-        }
-        else if (this.state.attacking) {
+        } else if (this.state.attacking) {
             if (this.lastMovement.right) {
                 this.oneTimeAnimation(0, 0, 7, 5);
             } else {
@@ -124,7 +121,4 @@ class Player extends Character {
               this.animateSprite(2, 0, 14, 5);
         }
     }
-
-
-    
 }

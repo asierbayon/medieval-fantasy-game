@@ -3,7 +3,7 @@ class Potion extends Obstacle {
     constructor(ctx, x, y) {
         super(ctx, x, y, `potion`, 2);
 
-        this.healPoints = 3; // change this
+        this.healPoints = POTION_HEALPOINTS;
 
         this.state.empty = false;
     }    

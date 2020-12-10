@@ -57,11 +57,8 @@ class Enemy extends Character {
             }   else {
                 this.vx = 0;
             }
-            
         }
-
         this.x += this.vx;
-
         this.checkMovement();
         this.isDead();
       }

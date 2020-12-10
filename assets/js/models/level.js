@@ -2,13 +2,10 @@ class Level {
 
     constructor(ctx, canvas, fps, lvlNumber) {
         this.ctx = ctx;
-
         this.canvas = canvas;
-        
         this.fps = fps;
 
         this.nextLevelAvailable = false;
-
         this.restartLevel = false;
 
         this.number = lvlNumber;
@@ -25,13 +22,13 @@ class Level {
                     this.attack();
                     this.heal();
                     this.checkHealth();
-                    this.nextLevel();
+                    this.betweenLevelAnimation();
                     this.restart();
                 }
             }, this.fps);
     };
 
-    nextLevel() {
+    betweenLevelAnimation() {
         if (!this.isTheLastLevel) {
             if (this.boss.state.dead && this.boss.sprite.horizontalFrameIndex > this.boss.sprite.maxHorizontalIndex) {
                 const img = new Image ();
@@ -45,7 +42,7 @@ class Level {
         } else {
             if (this.boss.state.dead && this.boss.sprite.horizontalFrameIndex > this.boss.sprite.maxHorizontalIndex) {
                 const img = new Image ();
-                img.src = `assets/img/game_completed.png`;
+                img.src = `assets/img/game-over.png`;
                 this.ctx.drawImage(
                     img,
                     0,
@@ -235,8 +232,7 @@ class Level {
         this.potion.filter(potion => potion.state.nextToCharacter && !potion.state.empty).forEach(potion => {
             this.player.healthPoints += potion.healPoints;
             potion.state.empty = true;
-        })
-        
+        });
     }
 
     setTarget() {
@@ -252,11 +248,11 @@ class Level {
                 return this.closestEnemy(calledLeft);
             }
         }
-    };
+    }
 
     lookingAtEnemy(enemy) {
         return this.player.lastMovement.right && enemy.position.right || this.player.lastMovement.left && enemy.position.left;
-    };
+    }
 
     closestEnemy(enemies) {
         return enemies.reduce((a, b) => {

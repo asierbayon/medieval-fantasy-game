@@ -13,8 +13,10 @@ class LevelOne extends Level {
         this.background = new Background(this.ctx, 'assets/img/lvl1_bg.png');
 
         this.potion = [
-            new Potion(this.ctx, 200, 427)
-        ]
+            new Potion(this.ctx, 520, 358),
+            new Potion(this.ctx, 900, 294),
+            new Potion(this.ctx, 1060, 358)
+        ];
 
         this.fireplace = [
             new Fireplace(this.ctx, 350, 260, 'fireplace'),

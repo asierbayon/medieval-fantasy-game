@@ -10,7 +10,6 @@ class Character {
         this.y = y;
         this.vy = 0;
         this.maxY = this.y;
-        this.movingBackground = false; // do I need this?
 
         this.sprite = new Image();
         this.sprite.src = `assets/img/${sprite}_sprites.png`;
@@ -29,15 +28,14 @@ class Character {
             this.sprite.frameHeight = Math.floor(this.sprite.height / this.sprite.verticalFrames);
             this.width = this.sprite.frameWidth;
             this.height = this.sprite.frameHeight;
-        }
+        };
 
         this.state = {
           moving: false,
           attacking: false,
           dead: false
-        }
+        };
 
-        
         this.state.onAPlatform = false;
         this.state.offAPlatform = false;
         this.platform = {
@@ -45,9 +43,9 @@ class Character {
           y: undefined,
           width: undefined
         };
+
         this.platformFloor = 0;
         this.ground = this.y;
-
 
         this.deadAnimated = false;
 
@@ -75,8 +73,7 @@ class Character {
             this.y,
             this.width,
             this.height
-          );
-        }
+          )};
         this.sprite.drawCount++;
         this.animate();        
     }  

@@ -5,9 +5,9 @@ class Boss extends Enemy {
 
         this.sprite.horizontalFrames = 37;
         this.sprite.verticalFrames = 8;
-        this.healthPoints = 10;
-        this.damagePoints = 3; //change this
-        this.speed = 1;
+        this.healthPoints = BOSS_HEALTH;
+        this.damagePoints = BOSS_DAMAGE;
+        this.speed = BOSS_SPEED;
     }
 
     animate() {

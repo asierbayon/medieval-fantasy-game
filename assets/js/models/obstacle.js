@@ -21,11 +21,11 @@ class Obstacle {
             this.sprite.frameHeight = this.sprite.height;
             this.width = this.sprite.frameWidth;
             this.height = this.sprite.frameHeight;
-        }
+        };
 
         this.state = {
             nextToCharacter: false
-        }
+        };
 
         this.inline = {
             vertically: false,
@@ -34,7 +34,7 @@ class Obstacle {
 
         this.movements = {
             right: false
-        }
+        };
     }
 
     isReady() {

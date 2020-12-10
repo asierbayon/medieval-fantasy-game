@@ -13,8 +13,11 @@ class LevelThree extends Level {
         this.background = new Background(this.ctx, 'assets/img/lvl3_bg.png');
 
         this.potion = [
-            new Potion(this.ctx, 200, 427)
-        ]
+            new Potion(this.ctx, 610, 427),
+            new Potion(this.ctx, 900, 294),
+            new Potion(this.ctx, 920, 294),
+            new Potion(this.ctx, 1700, 427)
+        ];
 
         this.fireplace = [
             new Fireplace(this.ctx, 390, 260, 'fireplace'),
@@ -39,7 +42,7 @@ class LevelThree extends Level {
             new Wolf(this.ctx, 270, 354),
             new Golem(this.ctx, 340, 277),
             new Wolf(this.ctx, 500, 422),
-            new Bat(this.ctx, 420, 392),
+            new Bat(this.ctx, 370, 392),
             new Wolf(this.ctx, 700, 422),
             new Wolf(this.ctx, 800, 422),
             new Wolf(this.ctx, 900, 422),

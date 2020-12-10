@@ -56,16 +56,12 @@ class Platform {
             this.width,
             this.height
             );
-
-            // this.ctx.strokeRect(this.x, this.y, this.width, this.sprite.frameHeight)
-
         }
     }  
 
-        move() {
+    move() {
         if (this.movements.right) {
             this.x += this.vx;
           }
-      }
-
+    }
 }

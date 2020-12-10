@@ -14,8 +14,10 @@ class LevelTwo extends Level {
         this.background = new Background(this.ctx, 'assets/img/lvl2_bg.png');
 
         this.potion = [
-            new Potion(this.ctx, 200, 427)
-        ]
+            new Potion(this.ctx, 470, 250),
+            new Potion(this.ctx, 910, 294),
+            new Potion(this.ctx, 1030, 358)
+        ];
 
         this.fireplace = [
             new Fireplace(this.ctx, 350, 260, 'fireplace'),
@@ -44,7 +46,6 @@ class LevelTwo extends Level {
             new Bat(this.ctx, 380, 392),
             new Bat(this.ctx, 410, 392),
             new Bat(this.ctx, 440, 392),
-            new Golem(this.ctx, 520, 410),
             new Golem(this.ctx, 620, 337),
             new Wolf(this.ctx, 900, 422),
             new Bat(this.ctx, 1200, 392),
