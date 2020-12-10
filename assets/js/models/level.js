@@ -53,6 +53,16 @@ class Level {
             }
         }
 
+        if (this.player.state.dead && this.player.sprite.horizontalFrameIndex > this.player.sprite.maxHorizontalIndex - 2) {
+            const img = new Image ();
+                img.src = `assets/img/press_any_key_dead.png`;
+                this.ctx.drawImage(
+                    img,
+                    520,
+                    20
+                );
+        }
+
         if (this.boss.deadAnimated && !this.isTheLastLevel) {
             this.nextLevelAvailable = true;
         }

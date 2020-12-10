@@ -36,7 +36,6 @@ class Game {
     };
     
     onKeyEvent(event) {
-        
         if (this.currentLevel()) {
             this.currentLevel().onKeyEvent(event);
             if (this.level[0].nextLevelAvailable) {
