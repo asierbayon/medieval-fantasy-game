@@ -14,7 +14,7 @@ class Game {
             new LevelThree(this.ctx, this.canvas, this.fps)
         ];
 
-        this.originalLevel = this.level[0];
+        this.originalLevel = new LevelOne(this.ctx, this.canvas, this.fps) ;
 
     }
     
@@ -45,6 +45,7 @@ class Game {
                 this.level.shift();
                 this.start();
             } else if (this.level[0].restartLevel) {
+                this.level.shift();
                 this.level.unshift(this.originalLevel)
                 this.start();
             }

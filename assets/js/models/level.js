@@ -111,6 +111,7 @@ class Level {
     positionChecker() {
         this.enemy.forEach(enemy => this.callEnemy(enemy));
         this.enemy.forEach(enemy => this.inlineChecker(enemy));
+        this.obstacles.forEach(obstacle => this.inlineChecker(obstacle))
         this.enemy.forEach(enemy => this.sideOfPlayerIsEnemyOn(enemy));
         this.onTheSamePlatform();
     };
@@ -121,7 +122,7 @@ class Level {
             this.enemy.forEach(enemy => enemy.onPlatformChecker(platform));
             });
         this.enemy.forEach(enemy => this.nextToCharacter(enemy));
-        this.obstacles.forEach(obstacle => this.nextToCharacter(obstacle))
+        this.obstacles.forEach(obstacle => this.nextToCharacter(obstacle));
     };
 
     onTheSamePlatform() {
