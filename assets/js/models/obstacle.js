@@ -1,6 +1,6 @@
 class Obstacle {
 
-    constructor(ctx, x, y, sprite) {
+    constructor(ctx, x, y, sprite, horizontalFrames) {
         this.ctx = ctx;
         this.x = x;
         this.y = y;
@@ -10,7 +10,7 @@ class Obstacle {
         this.sprite = new Image();
         this.sprite.src = `assets/img/${sprite}_sprites.png`;
         this.sprite.isReady = false;
-        this.sprite.horizontalFrames = 6;
+        this.sprite.horizontalFrames = horizontalFrames;
         this.sprite.horizontalFrameIndex = 0;
         this.sprite.maxHorizontalIndex = this.sprite.horizontalFrames;
         this.sprite.initialHorizontalIndex = 0;

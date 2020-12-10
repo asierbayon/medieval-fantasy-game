@@ -23,6 +23,7 @@ class Level {
                     this.positionChecker();
                     this.collisionChecker();
                     this.attack();
+                    this.heal();
                     this.checkHealth();
                     this.nextLevel();
                     this.restart();
@@ -73,7 +74,8 @@ class Level {
             this.background.onKeyEvent(event);
             this.player.onKeyEvent(event);
             this.platform.forEach(platform => platform.onKeyEvent(event));
-            this.obstacles.forEach(obstacle => obstacle.onKeyEvent(event));
+            this.fireplace.forEach(fireplace => fireplace.onKeyEvent(event));
+            this.potion.forEach(potion => potion.onKeyEvent(event));
         }
     };
 
@@ -87,14 +89,16 @@ class Level {
         this.player.draw();
         this.enemy.forEach(enemy => enemy.draw());
         this.health.forEach(heart => heart.draw());
-        this.obstacles.forEach(obstacle => obstacle.draw());
+        this.fireplace.forEach(fireplace => fireplace.draw());
+        this.potion.forEach(potion => potion.draw());
     };
 
     move() {
         if (this.player.x >= this.player.maxX) {
             this.background.move();
             this.platform.forEach(platform => platform.move());
-            this.obstacles.forEach(obstacle => obstacle.move());
+            this.fireplace.forEach(fireplace => fireplace.move());
+            this.potion.forEach(potion => potion.move());
           }
         this.player.move();
         this.enemy.forEach(enemy => enemy.move(this.player));
@@ -103,9 +107,18 @@ class Level {
     checkHealth() {
         this.player.isDead();
         const lostHealth = CHARACTER_HEALTH - this.player.healthPoints;
-        if (lostHealth <= 4) {
+        if (lostHealth < 0) {
+            this.health[0].sprite.horizontalFrameIndex = 0;  
+            this.health[1].sprite.horizontalFrameIndex = 0;
+            this.health[2].sprite.horizontalFrameIndex = 0; 
+        }
+            else if (lostHealth <= 4 && lostHealth >= 0) {
+            this.health[0].sprite.horizontalFrameIndex = 0;
+            this.health[1].sprite.horizontalFrameIndex = 0;
             this.health[2].sprite.horizontalFrameIndex = lostHealth;
+            
         } else if (lostHealth > 4 && lostHealth <= 8) {
+            this.health[0].sprite.horizontalFrameIndex = 0;
             this.health[1].sprite.horizontalFrameIndex = lostHealth - 4;
             this.health[2].sprite.horizontalFrameIndex = 4;        
         } else if (lostHealth > 8 && lostHealth <= 12) {
@@ -122,7 +135,8 @@ class Level {
     positionChecker() {
         this.enemy.forEach(enemy => this.callEnemy(enemy));
         this.enemy.forEach(enemy => this.inlineChecker(enemy));
-        this.obstacles.forEach(obstacle => this.inlineChecker(obstacle))
+        this.fireplace.forEach(fireplace => this.inlineChecker(fireplace));
+        this.potion.forEach(potion => this.inlineChecker(potion));
         this.enemy.forEach(enemy => this.sideOfPlayerIsEnemyOn(enemy));
         this.onTheSamePlatform();
     };
@@ -133,7 +147,8 @@ class Level {
             this.enemy.forEach(enemy => enemy.onPlatformChecker(platform));
             });
         this.enemy.forEach(enemy => this.nextToCharacter(enemy));
-        this.obstacles.forEach(obstacle => this.nextToCharacter(obstacle));
+        this.fireplace.forEach(fireplace => this.nextToCharacter(fireplace));
+        this.potion.forEach(potion => this.nextToCharacter(potion));
     };
 
     onTheSamePlatform() {
@@ -188,7 +203,7 @@ class Level {
 
     attack() {
         const closeEnemies = this.enemy.filter(enemy => !enemy.state.dead && enemy.state.nextToCharacter);
-        const closeFireplaces = this.obstacles.filter(fireplace => fireplace.state.nextToCharacter);
+        const closeFireplaces = this.fireplace.filter(fireplace => fireplace.state.nextToCharacter);
         const enemiesFighting = closeEnemies.filter(enemy => this.lookingAtEnemy(enemy))
         if (!this.player.alreadyTakenLifeFromOpponent && this.player.state.attacking && enemiesFighting.length > 0) {
             this.setTarget().healthPoints -= this.player.damagePoints;
@@ -215,6 +230,14 @@ class Level {
             });
         }
     };
+
+    heal() {
+        this.potion.filter(potion => potion.state.nextToCharacter && !potion.state.empty).forEach(potion => {
+            this.player.healthPoints += potion.healPoints;
+            potion.state.empty = true;
+        })
+        
+    }
 
     setTarget() {
         const calledInlineEnemies = this.enemy.filter(enemy => enemy.state.called && !enemy.state.dead && enemy.inline.horizontally);

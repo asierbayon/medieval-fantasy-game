@@ -19,7 +19,6 @@ class Game {
     }
     
     start() {
-        console.log(this.originalLevel)
         this.level[0].start();
         this.clear();
         this.stop();
