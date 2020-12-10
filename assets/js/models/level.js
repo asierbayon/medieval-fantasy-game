@@ -98,14 +98,14 @@ class Level {
         } else if (lostHealth > 4 && lostHealth <= 8) {
             this.health[1].sprite.horizontalFrameIndex = lostHealth - 4;
             this.health[2].sprite.horizontalFrameIndex = 4;        
-        } else if (lostHealth < 4 && lostHealth > 0) {
+        } else if (lostHealth > 8 && lostHealth <= 12) {
             this.health[0].sprite.horizontalFrameIndex = lostHealth - 8;  
             this.health[1].sprite.horizontalFrameIndex = 4;
             this.health[2].sprite.horizontalFrameIndex = 4;  
         } else {
             this.health[0].sprite.horizontalFrameIndex = 4;  
             this.health[1].sprite.horizontalFrameIndex = 4;
-            this.health[2].sprite.horizontalFrameIndex = 4; 
+            this.health[2].sprite.horizontalFrameIndex = 4;  
         }
     };
 
