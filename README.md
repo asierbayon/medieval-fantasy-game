@@ -109,3 +109,8 @@ Allows our player to heal. Pretty useful if don't wanna die.
 https://oco.itch.io/medieval-fantasy-character-pack
 https://ansimuz.itch.io/gothicvania-church-pack
 
+![alt text](https://github.com/asierbayon/medieval-fantasy-game/blob/main/SS01.png?raw=true)
+![alt text](https://github.com/asierbayon/medieval-fantasy-game/blob/main/SS02.png?raw=true)
+![alt text](https://github.com/asierbayon/medieval-fantasy-game/blob/main/SS03.png?raw=true)
+![alt text](https://github.com/asierbayon/medieval-fantasy-game/blob/main/SS04.png?raw=true)
+![alt text](https://github.com/asierbayon/medieval-fantasy-game/blob/main/SS05.png?raw=true)
