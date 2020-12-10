@@ -9,18 +9,17 @@ class Game {
         this.fps = 1000 / 60;
 
         this.level = [
-            new LevelOne(this.ctx, this.canvas, this.fps),
-            new LevelTwo(this.ctx, this.canvas, this.fps),
-            new LevelThree(this.ctx, this.canvas, this.fps)
+            new LevelOne(this.ctx, this.canvas, this.fps, 1),
+            new LevelTwo(this.ctx, this.canvas, this.fps, 2),
+            new LevelThree(this.ctx, this.canvas, this.fps, 3)
         ];
 
-        this.originalLevel = new LevelOne(this.ctx, this.canvas, this.fps) ;
+        this.originalLevel;
 
     }
     
     start() {
-        this.originalLevel = this.level[0];
-        console.log(this.level)
+        console.log(this.originalLevel)
         this.level[0].start();
         this.clear();
         this.stop();
@@ -45,9 +44,20 @@ class Game {
                 this.level.shift();
                 this.start();
             } else if (this.level[0].restartLevel) {
-                this.level.shift();
-                this.level.unshift(this.originalLevel)
-                this.start();
+                if (this.level[0].number === 1) {
+                    this.stop();
+                    this.level.shift();
+                    this.level.unshift(new LevelOne(this.ctx, this.canvas, this.fps, 1));    
+                } else if (this.level[0].number === 2) {
+                    this.stop();
+                    this.level.shift();
+                    this.level.unshift(new LevelTwo(this.ctx, this.canvas, this.fps, 1));    
+                } else if (this.level[0].number === 3) {
+                    this.stop();
+                    this.level.shift();
+                    this.level.unshift(new LevelThree(this.ctx, this.canvas, this.fps, 1));    
+                }
+                this.start(); 
             }
         };
         

@@ -1,6 +1,6 @@
 class Level {
 
-    constructor(ctx, canvas, fps) {
+    constructor(ctx, canvas, fps, lvlNumber) {
         this.ctx = ctx;
 
         this.canvas = canvas;
@@ -10,12 +10,14 @@ class Level {
         this.nextLevelAvailable = false;
 
         this.restartLevel = false;
+
+        this.number = lvlNumber;
         
     }
 
     start() {
             this.drawIntervalId = setInterval(() => {
-                if (!this.nextLevelAvailable) {
+                if (!this.nextLevelAvailable && !this.restartLevel) {
                     this.move();
                     this.draw();
                     this.positionChecker();
@@ -50,7 +52,6 @@ class Level {
                 );
             }
         }
-        
 
         if (this.boss.deadAnimated && !this.isTheLastLevel) {
             this.nextLevelAvailable = true;

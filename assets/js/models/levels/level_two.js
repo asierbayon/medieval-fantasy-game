@@ -1,7 +1,7 @@
 class LevelTwo extends Level {
 
-    constructor (ctx, canvas, fps) {
-        super(ctx, canvas, fps);
+    constructor (ctx, canvas, fps, lvlNumber) {
+        super(ctx, canvas, fps, lvlNumber);
 
         this.isTheLastLevel = false;
         
